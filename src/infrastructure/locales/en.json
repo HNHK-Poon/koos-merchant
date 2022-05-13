@@ -1,0 +1,26 @@
+{
+    "auth": {
+        "alert": {
+            "redirectAlertTitle": "Authentication",
+            "redirectAlertText": "Please sign in before you continue",
+            "signinSuccessText": "Successfully sign in!"
+        },
+        "form": {
+            "emailPlaceholder": "Enter Email",
+            "phonePlaceholder": "Phone Number",
+            "passwordPlaceholder": "Password",
+            "confirmPasswordPlaceholder": "Confirm Password",
+            "signinButtonText": "Sign In",
+            "forgotPasswordText": "Forgot your password?",
+            "dontHaveAccountText": "Dont have account?",
+            "signUpNowText": "  Sign Up Now",
+            "backSignInButton": "Back to Sign In",
+            "nextButtonText": "Next",
+            "otpVerification": "OTP Verification",
+            "otpMessageText": "Enter the OPT you received at",
+            "resendOtpButtonText": "Didn't received? Resend",
+            "submitButtonText": "Submit",
+            "backToSignUpInfoText": "Back"
+        }
+    }
+}

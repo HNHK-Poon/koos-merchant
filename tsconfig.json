@@ -1,0 +1,35 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "useDefineForClassFields": true,
+        "lib": ["DOM", "DOM.Iterable", "ESNext"],
+        "allowJs": false,
+        "skipLibCheck": true,
+        "esModuleInterop": false,
+        "allowSyntheticDefaultImports": true,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "module": "ESNext",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "noEmit": true,
+        "jsx": "react-jsx",
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["./src/*", "./*"],
+            "@assets/*": ["./src/assets/*"],
+            "@home/*": ["./src/views/home/*"],
+            "@activity/*": ["./src/views/activity/*"],
+            "@state/*": ["./src/infrastructure/state/*"],
+            "@context/*": ["./src/infrastructure/context/*"],
+            "@service/*": ["./src/infrastructure/service/*"],
+            "@hook/*": ["./src/infrastructure/hook/*"],
+            "@locales/*": ["./src/infrastructure/locales/*"],
+        },
+        "moduleResolution": "node"
+    },
+    "include": ["env.d.ts", "src/**/*", "src/**/*.tsx", "src/**/*.ts"],
+    "exclude": ["node_modules", "src/**/*.spec.ts"],
+    "references": [{ "path": "./tsconfig.node.json" }]
+}
+

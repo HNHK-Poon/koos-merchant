@@ -1,0 +1,17 @@
+{
+    "auth": {
+        "alert": {
+            "redirectAlertTitle": "Authentication",
+            "redirectAlertText": "Please sign in before you continue",
+            "signinSuccessText": "Successfully sign in!"
+        },
+        "form": {
+            "emailPlaceholder": "Enter email",
+            "passwordPlaceholder": "Password",
+            "signinButtonText": "Sign In",
+            "forgotPasswordText": "Forgot your password?",
+            "dontHaveAccountText": "Dont have accouunt?",
+            "signUpNowText": "Sign Up Now"
+        }
+    }
+}
