@@ -10,7 +10,7 @@ import { useAuthService } from '@/infrastructure/hook/useService';
 
 const LoginPage = () => {
     const { t } = useTranslation();
-    const authService = useAuthService()
+    const authService = useAuthService();
 
     const navigate = useNavigate();
 
@@ -26,26 +26,28 @@ const LoginPage = () => {
     };
 
     const handleSubmit = async (event: any) => {
-        console.log(authService.login({Email: email, Password: password}))
         event.preventDefault();
-        console.log(email, password);
-        Cookies.set(
-            'token',
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
-            { expires: 3 }
-        );
-        await Swal.fire({
-            icon: 'success',
-            title: t('auth.alert.signinSuccessText'),
-            timer: 1000,
-            showConfirmButton: false,
-        });
-
-        sessionStorage.setItem('uid', email)
-
-        navigate('/');
+        const res = await authService
+            .login({ Email: email, Password: password })
+            .then(async(success: any) => {
+                await Swal.fire({
+                    icon: 'success',
+                    title: t('auth.alert.signinSuccessText'),
+                    timer: 2000,
+                    showConfirmButton: false,
+                });
+                navigate('/');
+                Cookies.set('token', success.data.Token);
+            })
+            .catch((err: any) => {
+                Swal.fire({
+                    icon: 'error',
+                    text: 'Sign in failed, please try again',
+                    timer: 2000,
+                    showConfirmButton: false,
+                });
+            });
     };
-
 
     return (
         <>
@@ -77,7 +79,7 @@ const LoginPage = () => {
                         <div className="px-2 py-2 mt-4 w-full bg-light-m rounded-full shadow-lg">
                             <input type="hidden" name="remember" value="True" />
                             <div className="flex items-center">
-                            <div className="w-12 h-12 p-2 rounded-full bg-light-s">
+                                <div className="w-12 h-12 p-2 rounded-full bg-light-s">
                                     <BiLockOpenAlt className="w-8 h-8" />
                                 </div>
                                 <input
@@ -112,11 +114,13 @@ const LoginPage = () => {
                 </div>
                 <div className="absolute bottom-5pc w-full mt-2 text-sm text-center">
                     <a
-                        onClick={()=>{navigate('/signupinfo')}}
+                        onClick={() => {
+                            navigate('/signupinfo');
+                        }}
                         className="font-medium text-dark-m"
                     >
-                        {t('auth.form.dontHaveAccountText')} 
-                        <span className="text-primary-xl font-bold"> 
+                        {t('auth.form.dontHaveAccountText')}
+                        <span className="text-primary-xl font-bold">
                             {t('auth.form.signUpNowText')}
                         </span>
                     </a>

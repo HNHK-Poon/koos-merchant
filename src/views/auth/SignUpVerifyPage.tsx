@@ -89,7 +89,7 @@ const SignUpVerifyPage = () => {
                                     onChange={(e) => {
                                         e.target.value = '';
                                     }}
-                                    type="text"
+                                    type="number"
                                     id={index.toString()}
                                     key={index}
                                     ref={(el) => inputs.current.push(el)}

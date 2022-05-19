@@ -10,19 +10,40 @@ import wave from '@assets/wave3.json';
 import payWave from '@assets/payWave.json';
 import QRCode from 'react-qr-code';
 import { HiOutlineQrcode } from 'react-icons/hi';
+import { RiUserSettingsLine } from 'react-icons/ri';
 import { io } from 'socket.io-client';
+import Cookies from 'js-cookie';
 
 const HomePage = () => {
     const rest = useRest().authService;
-    const { data, error, loaded } = useRestAsync(() => rest.login(123));
+    // const { data, error, loaded } = useRestAsync(() => rest.login(123));
     const { t } = useTranslation();
     const waveElement: any = useRef();
+    const navigate = useNavigate();
     const [socket, setSocket]: any = useState(null);
 
-    console.log('home', data, error, loaded);
+    // console.log('home', data, error, loaded);
 
     useEffect(() => {
-        setSocket(io('ws://localhost:3030'));
+        // setSocket(io('ws://localhost:3030'));
+        console.log('token', Cookies.get('token'));
+        if (!Cookies.get('token')) {
+            Swal.fire({
+                title: 'Loading',
+                text: 'Sign in before proceed.',
+                timer: 3000,
+                didOpen: () => {
+                    Swal.showLoading();
+                },
+            }).then((result) => {
+                /* Read more about handling dismissals below */
+                if (result.dismiss === Swal.DismissReason.timer) {
+                    console.log('I was closed by the timer');
+                }
+                navigate('/login');
+            });
+        }
+
         lottie.loadAnimation({
             container: document.querySelector('#wave')
                 ? document.querySelector('#wave')
@@ -48,42 +69,57 @@ const HomePage = () => {
         // });
     }, []);
 
-    useEffect(() => {
-        if (socket) {
-            socket.on('connect', () => {
-                console.log('connected', socket.id); // x8WIv7-mJelg7on_ALbx
-                socket.emit('join', {room:"notification"})
-                socket.emit('join', {room:sessionStorage.getItem('uid')})
-            });
+    // useEffect(() => {
+    //     if (socket) {
+    //         socket.on('connect', () => {
+    //             console.log('connected', socket.id); // x8WIv7-mJelg7on_ALbx
+    //             socket.emit('join', {room:"notification"})
+    //             socket.emit('join', {room:sessionStorage.getItem('uid')})
+    //         });
 
-            socket.on('notification', (msg: any) => {
-                Swal.fire({
-                    text: msg.text,
-                    timer: 2000,
-                    showConfirmButton: false
-                })
-            })
-        }
-    }, [socket]);
+    //         socket.on('notification', (msg: any) => {
+    //             Swal.fire({
+    //                 text: msg.text,
+    //                 timer: 2000,
+    //                 showConfirmButton: false
+    //             })
+    //         })
+    //     }
+    // }, [socket]);
 
-    if (error) {
-        Swal.fire({
-            title: 'Error',
-            timer: 1000,
-            didOpen: () => {
-                Swal.showLoading();
-            },
-        }).then((result) => {
-            /* Read more about handling dismissals below */
-            if (result.dismiss === Swal.DismissReason.timer) {
-                console.log('I was closed by the timer');
-            }
-        });
-    }
+    // if (error) {
+    //     Swal.fire({
+    //         title: 'Error',
+    //         timer: 1000,
+    //         didOpen: () => {
+    //             Swal.showLoading();
+    //         },
+    //     }).then((result) => {
+    //         /* Read more about handling dismissals below */
+    //         if (result.dismiss === Swal.DismissReason.timer) {
+    //             console.log('I was closed by the timer');
+    //         }
+    //     });
+    // }
+
+    const goToQRPage = () => {
+        navigate('/qrcode');
+    };
+
+    const signOut = () => {
+        Cookies.remove('token');
+        navigate('/login');
+    };
 
     return (
         <>
             <div className="relative h-screen bg-light-l">
+                <div
+                    onClick={signOut}
+                    className="absolute top-4 right-4 z-10 p-3 rounded-full bg-light-s shadow-md"
+                >
+                    <RiUserSettingsLine className="w-6 h-6 text-dark-l" />
+                </div>
                 <div className="relative bg-primary-m h-60">
                     <div
                         ref={waveElement}
@@ -92,7 +128,10 @@ const HomePage = () => {
                     />
                 </div>
 
-                <div className="absolute w-full top-40 flex justify-center">
+                <div
+                    onClick={goToQRPage}
+                    className="absolute w-full top-40 flex justify-center"
+                >
                     <div className="w-fit shadow-lg rounded-2xl px-4 pt-2 bg-light-xl">
                         <div className="flex w-fit justify-center items-center">
                             <div>
@@ -129,6 +168,15 @@ const HomePage = () => {
 
                 {/* <QrButton /> */}
                 {/* <QRCode value="123" /> */}
+                <div className="absolute p-8 top-30pc w-full h-30pc">
+                    <p className='text-bold text-xl py-2 font-bold text-dark-xs'>Categories</p>
+                    <div className='w-full h-full bg-light-m rounded-xl'></div>
+                </div>
+
+                <div className="absolute p-8 top-60pc w-full h-30pc">
+                <p className='text-bold text-xl py-2 font-bold text-dark-xs'>Promotions</p>
+                    <div className='w-full h-full bg-light-m rounded-xl'></div>
+                </div>
             </div>
         </>
     );
