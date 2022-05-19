@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useRest } from '@hook/useRest';
@@ -10,16 +10,19 @@ import wave from '@assets/wave3.json';
 import payWave from '@assets/payWave.json';
 import QRCode from 'react-qr-code';
 import { HiOutlineQrcode } from 'react-icons/hi';
+import { io } from 'socket.io-client';
 
 const HomePage = () => {
     const rest = useRest().authService;
     const { data, error, loaded } = useRestAsync(() => rest.login(123));
     const { t } = useTranslation();
     const waveElement: any = useRef();
+    const [socket, setSocket]: any = useState(null);
 
     console.log('home', data, error, loaded);
 
     useEffect(() => {
+        setSocket(io('ws://localhost:3030'));
         lottie.loadAnimation({
             container: document.querySelector('#wave')
                 ? document.querySelector('#wave')
@@ -44,6 +47,24 @@ const HomePage = () => {
         //     }
         // });
     }, []);
+
+    useEffect(() => {
+        if (socket) {
+            socket.on('connect', () => {
+                console.log('connected', socket.id); // x8WIv7-mJelg7on_ALbx
+                socket.emit('join', {room:"notification"})
+                socket.emit('join', {room:sessionStorage.getItem('uid')})
+            });
+
+            socket.on('notification', (msg: any) => {
+                Swal.fire({
+                    text: msg.text,
+                    timer: 2000,
+                    showConfirmButton: false
+                })
+            })
+        }
+    }, [socket]);
 
     if (error) {
         Swal.fire({
@@ -100,7 +121,9 @@ const HomePage = () => {
                                 </p>
                             </div>
                         </div>
-                        <p className='text-center my-1 text-xs text-dark-xs'>Click here to pay</p>
+                        <p className="text-center my-1 text-xs text-dark-xs">
+                            Click here to pay
+                        </p>
                     </div>
                 </div>
 

@@ -29,7 +29,12 @@ const AxiosInstanceProvider = (props: Props) => {
 
             return request;
         });
-        // instanceRef.current.interceptors.response.use(interceptor);
+        instanceRef.current.interceptors.response.use((response: any) => {
+
+            console.log("response:", response)
+
+            return response;
+        });
     }, []);
 
     const _authService = authService(instanceRef.current);

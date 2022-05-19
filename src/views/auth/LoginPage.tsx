@@ -6,9 +6,11 @@ import Cookies from 'js-cookie';
 import Swal from 'sweetalert2';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { useAuthService } from '@/infrastructure/hook/useService';
 
 const LoginPage = () => {
     const { t } = useTranslation();
+    const authService = useAuthService()
 
     const navigate = useNavigate();
 
@@ -24,6 +26,7 @@ const LoginPage = () => {
     };
 
     const handleSubmit = async (event: any) => {
+        console.log(authService.login({Email: email, Password: password}))
         event.preventDefault();
         console.log(email, password);
         Cookies.set(
@@ -37,6 +40,8 @@ const LoginPage = () => {
             timer: 1000,
             showConfirmButton: false,
         });
+
+        sessionStorage.setItem('uid', email)
 
         navigate('/');
     };

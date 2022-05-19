@@ -1,12 +1,20 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import Cookies from 'js-cookie';
+import Swal from 'sweetalert2';
+import { authService } from '@/infrastructure/service/authService';
+import { useAuthService } from '@/infrastructure/hook/useService';
 
 const SignUpVerifyPage = () => {
     const inputs = useRef(new Array());
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const authService = useAuthService();
+    console.log(authService);
+    const auth = useSelector((state: { auth: any }) => state.auth);
 
     const handleKeyDown = (e: any) => {
         const id = parseInt(e.target.id);
@@ -20,6 +28,43 @@ const SignUpVerifyPage = () => {
             console.log(input.value);
         });
     };
+
+    const handleSubmit = async () => {
+        const res = await authService
+            .register({
+                Email: auth.email,
+                Password: auth.password,
+                PhoneNumber: auth.contact,
+                Name: 'null',
+                Address: 'null',
+                Country: 'null',
+            })
+            .then((res: any) => {
+                console.log('success register');
+                Cookies.set(
+                    'token',
+                    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
+                    { expires: 3 }
+                );
+                Swal.fire({
+                    icon: 'success',
+                    title: t('auth.alert.signupSuccessText'),
+                    timer: 1000,
+                    showConfirmButton: false,
+                });
+                navigate('/login');
+            })
+            .catch((err: any) => {
+                console.log(err);
+                Swal.fire({
+                    icon: 'error',
+                    text: err.message,
+                    timer: 1000,
+                    showConfirmButton: false,
+                });
+            });
+
+    };
     return (
         <>
             <div className="h-screen bg-light-l py-20 px-3 flex justify-center items-center relative">
@@ -29,7 +74,7 @@ const SignUpVerifyPage = () => {
                     </h1>
                     <div className="flex flex-col mt-4">
                         <span>{t('auth.form.otpMessageText')}</span>
-                        <span className="font-bold">+60 ******876</span>
+                        <span className="font-bold">+60 {auth.contact}</span>
                     </div>
 
                     <div
@@ -64,9 +109,7 @@ const SignUpVerifyPage = () => {
                 </div>
                 <div className="absolute bottom-40">
                     <button
-                        onClick={() => {
-                            navigate('/signupverify');
-                        }}
+                        onClick={handleSubmit}
                         type="submit"
                         className="h-12 w-60 bg-primary-m text-light-l text-xl font-bold rounded-full shadow-lg"
                     >

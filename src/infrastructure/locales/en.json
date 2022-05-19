@@ -3,7 +3,8 @@
         "alert": {
             "redirectAlertTitle": "Authentication",
             "redirectAlertText": "Please sign in before you continue",
-            "signinSuccessText": "Successfully sign in!"
+            "signinSuccessText": "Successfully sign in!",
+            "signupSuccessText": "Successfully Registered!"
         },
         "form": {
             "emailPlaceholder": "Enter Email",
