@@ -16,8 +16,8 @@ const AppRouter = () => {
                 <Route
                     path="/qrcode"
                     element={
-                        <ProtectedRoute>
-                            <QrPage />
+                        <ProtectedRoute >
+                           <QrPage />
                         </ProtectedRoute>
                     }
                 />

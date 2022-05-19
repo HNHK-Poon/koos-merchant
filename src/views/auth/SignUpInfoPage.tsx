@@ -7,13 +7,17 @@ import { BsTelephone } from 'react-icons/bs';
 import Cookies from 'js-cookie';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import { editAuth } from '@/infrastructure/state/auth';
+import { useDispatch } from 'react-redux';
 
 const SignUpInfoPage = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const dispatch = useDispatch()
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [contact, setContact] = useState('');
 
     const handleEmailChange = (event: any) => {
         setEmail(event.target.value);
@@ -23,26 +27,21 @@ const SignUpInfoPage = () => {
         setPassword(event.target.value);
     };
 
+    const handleContactChange = (event: any) => {
+        setContact(event.target.value);
+    };
+
     const handleBackToSignin = () => {
         navigate('/login');
     };
 
     const handleSubmit = async (event: any) => {
         event.preventDefault();
-        console.log(email, password);
-        Cookies.set(
-            'token',
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
-            { expires: 3 }
-        );
-        await Swal.fire({
-            icon: 'success',
-            title: t('auth.alert.signinSuccessText'),
-            timer: 1000,
-            showConfirmButton: false,
-        });
+        dispatch(editAuth({key: "email", value: email}))
+        dispatch(editAuth({key: "password", value: password}))
+        dispatch(editAuth({key: "contact", value: contact}))
 
-        navigate('/');
+        navigate('/signupverify')
     };
     return (
         <>
@@ -86,7 +85,7 @@ const SignUpInfoPage = () => {
                                     placeholder={t(
                                         'auth.form.phonePlaceholder'
                                     )}
-                                    onChange={handleEmailChange}
+                                    onChange={handleContactChange}
                                     className="p-2 bg-light-m w-full rounded-md focus:outline-none text-dark-m"
                                 />
                             </div>
@@ -130,8 +129,7 @@ const SignUpInfoPage = () => {
                             </div>
                         </div>
                         <button
-                            onClick={() => {navigate('/signupverify')}}
-                            type="submit"
+                            onClick={handleSubmit}
                             className="h-16 mt-4 w-full bg-primary-m text-light-l text-xl font-bold rounded-full shadow-lg"
                         >
                             {t('auth.form.nextButtonText')}
