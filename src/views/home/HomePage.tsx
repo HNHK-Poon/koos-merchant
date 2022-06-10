@@ -87,25 +87,26 @@ const HomePage = () => {
     // }
 
     const goToQRPage = () => {
-        console.log('token', Cookies.get('token'));
-        if (!Cookies.get('token')) {
-            Swal.fire({
-                title: 'Loading',
-                text: 'Sign in before proceed.',
-                timer: 3000,
-                didOpen: () => {
-                    Swal.showLoading();
-                },
-            }).then((result) => {
-                /* Read more about handling dismissals below */
-                if (result.dismiss === Swal.DismissReason.timer) {
-                    console.log('I was closed by the timer');
-                }
-                navigate('/login');
-            });
-        }else{
-            navigate('/qrcode');
-        }
+        navigate('/qrreader');
+        // console.log('token', Cookies.get('token'));
+        // if (!Cookies.get('token')) {
+        //     Swal.fire({
+        //         title: 'Loading',
+        //         text: 'Sign in before proceed.',
+        //         timer: 3000,
+        //         didOpen: () => {
+        //             Swal.showLoading();
+        //         },
+        //     }).then((result) => {
+        //         /* Read more about handling dismissals below */
+        //         if (result.dismiss === Swal.DismissReason.timer) {
+        //             console.log('I was closed by the timer');
+        //         }
+        //         navigate('/login');
+        //     });
+        // }else{
+        //     navigate('/qrcode');
+        // }
     };
 
     const signOut = () => {

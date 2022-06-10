@@ -1,6 +1,12 @@
 module.exports = {
     content: ['./src/**/*.{js,jsx,ts,tsx}'],
     theme: {
+        screens: {
+            sm: '600px',
+            md: '960px',
+            lg: '1280px',
+            xl: '1920px',
+        },
         extend: {
             colors: {
                 transparent: 'transparent',
@@ -9,7 +15,7 @@ module.exports = {
                     s: '#FFAD1F',
                     m: '#F59B00',
                     l: '#CC8100',
-                    xl: '#A36700'
+                    xl: '#A36700',
                 },
                 dark: {
                     xs: '#727272',
