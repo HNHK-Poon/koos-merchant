@@ -11,8 +11,10 @@ import payWave from '@assets/payWave.json';
 import QRCode from 'react-qr-code';
 import { HiOutlineQrcode } from 'react-icons/hi';
 import { RiUserSettingsLine } from 'react-icons/ri';
+import { AiOutlineScan } from 'react-icons/ai';
 import { io } from 'socket.io-client';
 import Cookies from 'js-cookie';
+import TransactionRecord from './@components/TransactionRecord';
 
 const HomePage = () => {
     const rest = useRest().authService;
@@ -22,11 +24,20 @@ const HomePage = () => {
     const navigate = useNavigate();
     const [socket, setSocket]: any = useState(null);
 
+    const transactions = [
+        {
+            user: 'Peter',
+            product: 'Item A',
+            amount: 'RM50.00',
+            status: 'Pending',
+            time: '7 minutes ago',
+        },
+    ];
+
     // console.log('home', data, error, loaded);
 
     useEffect(() => {
         // setSocket(io('ws://localhost:3030'));
-        
 
         lottie.loadAnimation({
             container: document.querySelector('#wave')
@@ -136,49 +147,40 @@ const HomePage = () => {
                     className="absolute w-full top-40 flex justify-center"
                 >
                     <div className="w-fit shadow-lg rounded-2xl px-4 pt-2 bg-light-xl">
-                        <div className="flex w-fit justify-center items-center">
+                        <div className="flex w-fit justify-center items-center m-auto">
                             <div>
-                                <div className="relative bg-[#FFCB1F] w-16 h-16 rounded-2xl overflow-hidden shadow-lg">
-                                    <div className="bg-light-xl h-8"></div>
-                                    <div
-                                        ref={waveElement}
-                                        id="wave2"
-                                        className="w-16 bg-light-l"
-                                    />
+                                <div className="relative bg-light-m w-16 h-16 rounded-2xl overflow-hidden shadow-lg">
                                     <div className="absolute top-0">
-                                        <HiOutlineQrcode className="z-10 w-16 h-16 text-gray-600/50" />
-                                        <p className="text-center">pay</p>
+                                        <AiOutlineScan className="z-10 w-16 h-16 text-gray-600/50" />
                                     </div>
                                 </div>
                             </div>
-                            <div>
-                                <p className="text-dark-xs/75 text-xs pl-2">
-                                    You've spent
-                                </p>
-                                <p className="text-dark-xs/75 text-2xl font-extrabold pl-2">
-                                    RM15.75
-                                    <span className="text-dark-xs/75 text-xs font-normal">
-                                        / RM250
-                                    </span>
-                                </p>
-                            </div>
                         </div>
                         <p className="text-center my-1 text-xs text-dark-xs">
-                            Click here to pay
+                            Click here to scan
                         </p>
                     </div>
                 </div>
 
                 {/* <QrButton /> */}
                 {/* <QRCode value="123" /> */}
-                <div className="absolute p-8 top-30pc w-full h-30pc">
-                    <p className='text-bold text-xl py-2 font-bold text-dark-xs'>Categories</p>
-                    <div className='w-full h-full bg-light-m rounded-xl'></div>
-                </div>
-
-                <div className="absolute p-8 top-60pc w-full h-30pc">
-                <p className='text-bold text-xl py-2 font-bold text-dark-xs'>Promotions</p>
-                    <div className='w-full h-full bg-light-m rounded-xl'></div>
+                <div className="absolute p-8 top-30pc w-full h-60pc">
+                    <p className="text-bold text-xl py-2 font-bold text-dark-xs">
+                        Transactions
+                    </p>
+                    <div className="w-full h-full bg-light-l rounded-xl p-4">
+                        {transactions.map((transaction, i) => {
+                            return (
+                                <TransactionRecord
+                                    user={transaction.user}
+                                    product={transaction.product}
+                                    time={transaction.time}
+                                    amount={transaction.amount}
+                                    status={transaction.status}
+                                />
+                            );
+                        })}
+                    </div>
                 </div>
             </div>
         </>

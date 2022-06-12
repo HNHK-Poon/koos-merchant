@@ -23,5 +23,13 @@
             "submitButtonText": "Submit",
             "backToSignUpInfoText": "Back"
         }
+    },
+    "transaction": {
+        "form": {
+            "submitButtonText": "Create",
+            "itemName": "Product Name",
+            "amount": "Amount",
+            "description": "Description (Optional)"
+        }
     }
 }

@@ -4,11 +4,13 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import lottie from 'lottie-web';
-import scan from '@assets/scan.json';
+import scan from '@assets/scan2.json';
+import { useNavigate } from 'react-router-dom';
 
 const QrReaderPage = (props: any) => {
     const [data, setData] = useState('No result');
     const scanElement: any = useRef();
+    const navigate = useNavigate();
 
     useEffect(() => {
         lottie.loadAnimation({
@@ -48,6 +50,10 @@ const QrReaderPage = (props: any) => {
 
     const onSubmit = (data: any) => {};
 
+    const back = () => {
+        navigate("../transactionform")
+    }
+
     const onResult = (result: any, error: any) => {
         if (!!result) {
             setData(result?.text);
@@ -61,21 +67,28 @@ const QrReaderPage = (props: any) => {
     return (
         <>
             <div className="flex justify-center items-center">
-                <QrReader
-                    onResult={onResult}
-                    className="h-screen w-screen bg-gray-500 flex justify-center items-center"
-                />
-                <div className="absolute h-35pc w-full top-0 bg-gray-500/50"></div>
-                <div className="absolute h-35pc w-full bottom-0 bg-gray-500/50"></div>
-                <div className="absolute h-30pc w-20pc top-35pc left-0 bg-gray-500/50"></div>
-                <div className="absolute h-30pc w-20pc top-35pc right-0 bg-gray-500/50"></div>
-                <div className=" h-30pc w-60pc ">
-                    <div
-                        ref={scanElement}
-                        id="scan"
-                    />
+                <div className="absolute h-35pc w-full top-0 bg-black/50 z-20"></div>
+                <div className="absolute h-35pc w-full bottom-0 bg-black/50 z-20"></div>
+                <div className="absolute h-30pc w-20pc md:w-40pc top-35pc left-0 bg-black/50 z-20"></div>
+                <div className="absolute h-30pc w-20pc md:w-40pc top-35pc right-0 bg-black/50 z-20"></div>
+                <div className="absolute top-30pc text-white font-semibold z-30">
+                    Scan QR Code
                 </div>
-                <div className="absolute bottom-10pc">
+                <div className="relative">
+                    <QrReader
+                        onResult={onResult}
+                        className="h-screen w-screen bg-black flex justify-center items-center"
+                    />
+                    <div className="absolute left-50pc top-50pc -translate-x-1/2 -translate-y-1/2 h-64 w-64 md:h-128 md:w-128 max-w-128 max-h-128 overflow-hidden">
+                    <div ref={scanElement} id="scan" />
+                </div>
+                </div>
+                <div onClick={back} className="absolute bottom-5pc z-30">
+                    <button className='w-full md:w-40pc text-center font-semibold rounded-full bg-primary-s py-2 px-8 text-white' >
+                        Back
+                    </button>
+                </div>
+                {/* <div className="absolute bottom-10pc">
                     <p>{data}</p>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <input {...register('itemName')} />
@@ -86,7 +99,7 @@ const QrReaderPage = (props: any) => {
 
                         <button type="submit">Submit</button>
                     </form>
-                </div>
+                </div> */}
             </div>
         </>
     );
