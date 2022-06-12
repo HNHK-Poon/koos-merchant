@@ -77,6 +77,7 @@ const QrReaderPage = (props: any) => {
                 <div className="relative">
                     <QrReader
                         onResult={onResult}
+                        constraints={{facingMode: 'environment'}}
                         className="h-screen w-screen bg-black flex justify-center items-center"
                     />
                     <div className="absolute left-50pc top-50pc -translate-x-1/2 -translate-y-1/2 h-64 w-64 md:h-128 md:w-128 max-w-128 max-h-128 overflow-hidden">
