@@ -9,16 +9,31 @@ import { BiLockOpenAlt } from 'react-icons/bi';
 import { MdShoppingCart, MdPayment } from 'react-icons/md';
 import { useTranslation } from 'react-i18next';
 import Swal from 'sweetalert2';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { useTransactionService } from '@/infrastructure/hook/useService';
+import { transactionAdded } from '@/infrastructure/state/transaction';
+import { v4 as uuidv4 } from 'uuid';
+import { useDispatch, useSelector } from 'react-redux';
 
 interface IProps {}
+
+interface ILocationState {
+    id: string;
+}
 
 const TransactionFormPage = (props: IProps) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const location = useLocation();
+    const dispatch = useDispatch();
+    const transactionService = useTransactionService();
+    const auth = useSelector((state: {auth:any}) => state.auth)
+    console.log('transactionService', transactionService);
+
+    const { id } = location.state as ILocationState;
     const schema = yup
         .object({
-            itemName: yup.string().required('Must enter product name.'),
+            name: yup.string().required('Must enter product name.'),
             description: yup.string(),
             amount: yup
                 .number()
@@ -28,7 +43,7 @@ const TransactionFormPage = (props: IProps) => {
         .required();
 
     const defaultValues = {
-        itemName: '',
+        name: '',
         description: '',
         amount: '',
     };
@@ -43,15 +58,36 @@ const TransactionFormPage = (props: IProps) => {
         resolver: yupResolver(schema),
     });
 
-    const onSubmit = (data: any) => {
-        Swal.fire({
-            icon: 'success',
-            title: t('auth.alert.signinSuccessText'),
-            timer: 2000,
-            showConfirmButton: false,
-        }).then(() => {
-            navigate('/');
-        });
+    const onSubmit = async (value:any) => {
+        console.log(value)
+        const data = {
+            id: uuidv4(),
+            name: value.name,
+            amount: value.amount,
+            user: 'e43f28b5a412414e8c9056bf961394a8',
+            merchant: auth.userId,
+            time: 123,
+            status: 'pending',
+        };
+        dispatch(transactionAdded(data));
+        transactionService
+            .create({
+                userId: 'e43f28b5a412414e8c9056bf961394a8',
+                data,
+            })
+            .then((res: any) => {
+                Swal.fire({
+                    icon: 'success',
+                    title: "Transaction Created",
+                    timer: 2000,
+                    showConfirmButton: false,
+                }).then(() => {
+                    navigate('/');
+                });
+            })
+            .catch((err: any) => {
+                console.log(err);
+            });
     };
 
     return (
@@ -78,14 +114,14 @@ const TransactionFormPage = (props: IProps) => {
                                     </div>
                                     <div>
                                         <input
-                                            {...register('itemName')}
+                                            {...register('name')}
                                             placeholder={t(
                                                 'transaction.form.itemName'
                                             )}
                                             className="p-2 bg-light-m w-full rounded-md focus:outline-none text-xl text-dark-m"
                                         />
                                         <p className="px-2 text-red-600">
-                                            {errors.itemName?.message}
+                                            {errors.name?.message}
                                         </p>
                                     </div>
                                 </div>

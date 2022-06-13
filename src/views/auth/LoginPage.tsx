@@ -7,10 +7,14 @@ import Swal from 'sweetalert2';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useAuthService } from '@/infrastructure/hook/useService';
+import { jwtDecrypt } from '@/infrastructure/seedworks/jwtVerify';
+import { useDispatch } from 'react-redux';
+import { editAuth } from '@/infrastructure/state/auth';
 
 const LoginPage = () => {
     const { t } = useTranslation();
     const authService = useAuthService();
+    const dispatch = useDispatch();
 
     const navigate = useNavigate();
 
@@ -29,7 +33,7 @@ const LoginPage = () => {
         event.preventDefault();
         const res = await authService
             .login({ Email: email, Password: password })
-            .then(async(success: any) => {
+            .then(async (success: any) => {
                 await Swal.fire({
                     icon: 'success',
                     title: t('auth.alert.signinSuccessText'),
@@ -37,7 +41,15 @@ const LoginPage = () => {
                     showConfirmButton: false,
                 });
                 navigate('/');
-                Cookies.set('token', success.data.Token);
+                const token = success.data.Token ? success.data.Token : '';
+                if (token) {
+                    Cookies.set('token', success.data.Token);
+                    const jwtInfo = jwtDecrypt(token);
+                    dispatch(
+                        editAuth({ key: 'userId', value: jwtInfo.userId })
+                    );
+                }
+                console.log(jwtDecrypt(success.data.Token));
             })
             .catch((err: any) => {
                 Swal.fire({
@@ -111,19 +123,6 @@ const LoginPage = () => {
                             </a>
                         </div>
                     </form>
-                </div>
-                <div className="absolute bottom-5pc w-full mt-2 text-sm text-center">
-                    <a
-                        onClick={() => {
-                            navigate('/signupinfo');
-                        }}
-                        className="font-medium text-dark-m"
-                    >
-                        {t('auth.form.dontHaveAccountText')}
-                        <span className="text-primary-xl font-bold">
-                            {t('auth.form.signUpNowText')}
-                        </span>
-                    </a>
                 </div>
             </div>
         </>

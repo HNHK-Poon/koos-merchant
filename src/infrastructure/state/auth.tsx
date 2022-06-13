@@ -4,10 +4,12 @@ interface AuthState {
     email: string;
     password: string;
     contact: string;
+    userId: string;
+    permissions: [];
 }
 
 interface Payload {
-  key:'email' | 'password' | 'contact',
+  key:'email' | 'password' | 'contact' | 'userId' | 'permissions',
   value: any
 }
 
@@ -15,6 +17,8 @@ const initialState: AuthState = {
     email: '',
     password: '',
     contact: '',
+    userId: '',
+    permissions: []
 };
 
 export const authSlice = createSlice({
@@ -22,7 +26,7 @@ export const authSlice = createSlice({
     initialState,
     reducers: {
         editAuth: (state, action:PayloadAction<Payload>) => {
-            state[action.payload.key] += action.payload.value;
+            state[action.payload.key] = action.payload.value;
         },
     },
 });

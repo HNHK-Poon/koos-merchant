@@ -15,6 +15,8 @@ import { AiOutlineScan } from 'react-icons/ai';
 import { io } from 'socket.io-client';
 import Cookies from 'js-cookie';
 import TransactionRecord from './@components/TransactionRecord';
+import { selectTransactions } from '@/infrastructure/state/transaction';
+import { useSelector } from 'react-redux';
 
 const HomePage = () => {
     const rest = useRest().authService;
@@ -23,16 +25,17 @@ const HomePage = () => {
     const waveElement: any = useRef();
     const navigate = useNavigate();
     const [socket, setSocket]: any = useState(null);
+    const transactions = useSelector(selectTransactions);
 
-    const transactions = [
-        {
-            user: 'Peter',
-            product: 'Item A',
-            amount: 'RM50.00',
-            status: 'Pending',
-            time: '7 minutes ago',
-        },
-    ];
+    // const transactions = [
+    //     {
+    //         user: 'Peter',
+    //         product: 'Item A',
+    //         amount: 'RM50.00',
+    //         status: 'Pending',
+    //         time: '7 minutes ago',
+    //     },
+    // ];
 
     // console.log('home', data, error, loaded);
 
@@ -172,10 +175,12 @@ const HomePage = () => {
                         {transactions.map((transaction, i) => {
                             return (
                                 <TransactionRecord
+                                    key={i}
+                                    id={transaction.id}
                                     user={transaction.user}
-                                    product={transaction.product}
-                                    time={transaction.time}
-                                    amount={transaction.amount}
+                                    name={transaction.name}
+                                    time={transaction.time.toString()}
+                                    amount={transaction.amount.toString()}
                                     status={transaction.status}
                                 />
                             );

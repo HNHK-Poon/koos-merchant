@@ -9,6 +9,7 @@ import SignUpInfoPage from '@/views/auth/SignUpInfoPage';
 import SignUpVerifyPage from '@/views/auth/SignUpVerifyPage';
 import { QrReader } from 'react-qr-reader';
 import TransactionFormPage from '@/views/transaction/TransactionFormPage';
+import TransactionModalPage from '@/views/transaction/TransactionModalPage';
 // import Home from "@/views/home/Home";
 
 const AppRouter = () => {
@@ -19,13 +20,31 @@ const AppRouter = () => {
                 <Route
                     path="/qrcode"
                     element={
-                        <ProtectedRoute >
-                           <QrPage />
+                        <ProtectedRoute>
+                            <QrPage />
                         </ProtectedRoute>
                     }
                 />
-                <Route path="/qrreader" element={<QrReaderPage />} />
-                <Route path="/transactionform" element={<TransactionFormPage />} />
+                <Route
+                    path="/qrreader"
+                    element={
+                        <ProtectedRoute>
+                            <QrReaderPage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/transactionform"
+                    element={<TransactionFormPage />}
+                />
+                <Route
+                    path="/transactionmodal"
+                    element={
+                        <ProtectedRoute >
+                           <TransactionModalPage />
+                        </ProtectedRoute>
+                    }
+                />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/signupinfo" element={<SignUpInfoPage />} />
                 <Route path="/signupverify" element={<SignUpVerifyPage />} />

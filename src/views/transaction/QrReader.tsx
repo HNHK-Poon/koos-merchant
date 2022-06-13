@@ -51,12 +51,14 @@ const QrReaderPage = (props: any) => {
     const onSubmit = (data: any) => {};
 
     const back = () => {
-        navigate("../transactionform")
-    }
+        // navigate(-1)
+        navigate('/transactionform', { state: { id: '123'} });
+    };
 
     const onResult = (result: any, error: any) => {
         if (!!result) {
             setData(result?.text);
+            navigate('/transactionform', { state: { id: result?.text } });
         }
 
         if (!!error) {
@@ -77,15 +79,15 @@ const QrReaderPage = (props: any) => {
                 <div className="relative">
                     <QrReader
                         onResult={onResult}
-                        constraints={{facingMode: 'environment'}}
+                        constraints={{ facingMode: 'environment' }}
                         className="h-screen w-screen bg-black flex justify-center items-center"
                     />
                     <div className="absolute left-50pc top-50pc -translate-x-1/2 -translate-y-1/2 h-64 w-64 md:h-128 md:w-128 max-w-128 max-h-128 overflow-hidden">
-                    <div ref={scanElement} id="scan" />
-                </div>
+                        <div ref={scanElement} id="scan" />
+                    </div>
                 </div>
                 <div onClick={back} className="absolute bottom-5pc z-30">
-                    <button className='w-full md:w-40pc text-center font-semibold rounded-full bg-primary-s py-2 px-8 text-white' >
+                    <button className="w-full md:w-40pc text-center font-semibold rounded-full bg-primary-s py-2 px-8 text-white">
                         Back
                     </button>
                 </div>

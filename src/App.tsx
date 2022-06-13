@@ -5,12 +5,15 @@ import AppRouter from './routes/Router';
 import { store } from '@state/store';
 import { Provider } from 'react-redux';
 import AxiosInstanceProvider from './infrastructure/context/ApiContext';
+import { SocketProvider } from './infrastructure/context/SocketContext';
 
 function App() {
     return (
         <Provider store={store}>
             <AxiosInstanceProvider>
-                <AppRouter />
+                <SocketProvider>
+                    <AppRouter />
+                </SocketProvider>
             </AxiosInstanceProvider>
         </Provider>
     );

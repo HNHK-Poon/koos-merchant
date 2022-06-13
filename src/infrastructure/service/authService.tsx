@@ -1,5 +1,5 @@
 export const authService = (rest: any) => {
-    const API_PREFIX = 'auth/user';
+    const API_PREFIX = 'api/auth/merchant';
     return {
         login: (data: any) => {
             return rest.post(`${API_PREFIX}/login`, data);
