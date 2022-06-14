@@ -64,7 +64,7 @@ const TransactionFormPage = (props: IProps) => {
             id: uuidv4(),
             name: value.name,
             amount: value.amount,
-            user: id,
+            user: id, //e43f28b5a412414e8c9056bf961394a8
             merchant: auth.userId,
             time: 123,
             status: 'pending',
@@ -72,7 +72,7 @@ const TransactionFormPage = (props: IProps) => {
         dispatch(transactionAdded(data));
         transactionService
             .create({
-                userId: id,
+                userId: id, //e43f28b5a412414e8c9056bf961394a8
                 data,
             })
             .then((res: any) => {

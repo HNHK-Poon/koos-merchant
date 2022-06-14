@@ -17,6 +17,7 @@ interface IProps {}
 
 interface ILocationState {
     id: string;
+    user: string;
 }
 
 interface ITransactionState {
@@ -29,7 +30,7 @@ interface ITransactionState {
 
 const TransactionModalPage = (props: IProps) => {
     const location = useLocation();
-    const { id } = location.state as ILocationState;
+    const { id, user } = location.state as ILocationState;
     const transactionService = useTransactionService()
 
     const transaction = useSelector((state: any) =>
@@ -40,7 +41,7 @@ const TransactionModalPage = (props: IProps) => {
 
     const completeTransaction = () => {
         transactionService.complete({
-            userId: "e43f28b5a412414e8c9056bf961394a8",
+            userId: user,
             data: {
                 id: transaction.id,
                 changes: {

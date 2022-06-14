@@ -17,7 +17,7 @@ interface IProps {
 const TransactionRecord = (props: IProps) => {
     const navigate = useNavigate();
     const goToTransaction = () => {
-        navigate('/transactionmodal', { state: { id: props.merchant } });
+        navigate('/transactionmodal', { state: { id: props.id, user: props.user } });
     };
     return (
         <div
@@ -37,7 +37,7 @@ const TransactionRecord = (props: IProps) => {
                 >
                     {props.status != 'success' ? props.status : props.amount}
                 </p>
-                <p className="text-xs">{props.time}</p>
+                <p className="text-xs">RM{props.amount}</p>
             </div>
         </div>
     );
