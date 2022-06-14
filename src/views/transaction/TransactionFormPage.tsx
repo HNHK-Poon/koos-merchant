@@ -103,7 +103,7 @@ const TransactionFormPage = (props: IProps) => {
                         <div className="h-32 mx-10 text-white bg-light-xl shadow-md text-lg font-semibold rounded-xl flex justify-start items-center">
                             <HiUserCircle className="px-2 w-16 h-16 text-dark-xs" />
                             <div className="text-xl text-dark-s font-semibold">
-                                {id}
+                                {id.slice(0,12)}
                             </div>
                         </div>
                         <form onSubmit={handleSubmit(onSubmit)} className="p-8">
