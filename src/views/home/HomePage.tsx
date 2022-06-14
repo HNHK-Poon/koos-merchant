@@ -178,6 +178,7 @@ const HomePage = () => {
                                     key={i}
                                     id={transaction.id}
                                     user={transaction.user}
+                                    merchant={transaction.merchant}
                                     name={transaction.name}
                                     time={transaction.time.toString()}
                                     amount={transaction.amount.toString()}

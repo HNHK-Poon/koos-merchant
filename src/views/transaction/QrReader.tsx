@@ -51,8 +51,8 @@ const QrReaderPage = (props: any) => {
     const onSubmit = (data: any) => {};
 
     const back = () => {
-        // navigate(-1)
-        navigate('/transactionform', { state: { id: '123'} });
+        navigate(-1)
+        // navigate('/transactionform', { state: { id: '123'} });
     };
 
     const onResult = (result: any, error: any) => {

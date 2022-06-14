@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 interface IProps {
     id: string;
     user: string;
+    merchant: string;
     name: string;
     time: string;
     amount: string;
@@ -16,7 +17,7 @@ interface IProps {
 const TransactionRecord = (props: IProps) => {
     const navigate = useNavigate();
     const goToTransaction = () => {
-        navigate('/transactionmodal', { state: { id: props.id } });
+        navigate('/transactionmodal', { state: { id: props.merchant } });
     };
     return (
         <div
