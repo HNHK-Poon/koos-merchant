@@ -43,7 +43,7 @@ const LoginPage = () => {
                 navigate('/');
                 const token = success.data.Token ? success.data.Token : '';
                 if (token) {
-                    Cookies.set('token', success.data.Token);
+                    Cookies.set('koos_merchant_token', success.data.Token);
                     const jwtInfo = jwtDecrypt(token);
                     dispatch(
                         editAuth({ key: 'userId', value: jwtInfo.userId })

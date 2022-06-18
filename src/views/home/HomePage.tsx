@@ -124,7 +124,7 @@ const HomePage = () => {
     };
 
     const signOut = () => {
-        Cookies.remove('token');
+        Cookies.remove('koos_merchant_token');
         navigate('/login');
     };
 

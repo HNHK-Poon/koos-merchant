@@ -16,7 +16,14 @@ const AppRouter = () => {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<HomePage />}></Route>
+                <Route
+                    path="/"
+                    element={
+                        <ProtectedRoute>
+                            <HomePage />
+                        </ProtectedRoute>
+                    }
+                ></Route>
                 <Route
                     path="/qrcode"
                     element={
@@ -40,8 +47,8 @@ const AppRouter = () => {
                 <Route
                     path="/transactionmodal"
                     element={
-                        <ProtectedRoute >
-                           <TransactionModalPage />
+                        <ProtectedRoute>
+                            <TransactionModalPage />
                         </ProtectedRoute>
                     }
                 />

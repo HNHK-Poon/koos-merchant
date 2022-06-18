@@ -11,7 +11,6 @@ const SocketProvider = (props: any) => {
     const dispatch = useDispatch();
 
     const init = (userId: any) => {
-        console.log('init', socket, userId);
         if (userId) {
             setUserId(userId);
         }
@@ -28,14 +27,24 @@ const SocketProvider = (props: any) => {
                 console.log('connected', socket.id); // x8WIv7-mJelg7on_ALbx
             });
 
-            socket.on('transactionPaid', (params: any) => {
-                console.log('Transaction PAID!');
-                dispatch(
-                    transactionUpdate({
-                        id: params.id,
-                        changes: params.changes,
-                    })
-                );
+            socket.on('transaction:paid', (params: any) => {
+                console.log('transaction:paid', params);
+                // dispatch(
+                //     transactionUpdate({
+                //         id: params.id,
+                //         changes: params.changes,
+                //     })
+                // );
+            });
+
+            socket.on('transaction:confirmed', (params: any) => {
+                console.log('transaction:confirmed', params);
+                // dispatch(
+                //     transactionUpdate({
+                //         id: params.id,
+                //         changes: params.changes,
+                //     })
+                // );
             });
         }
     }, [socket, userId]);
@@ -44,6 +53,7 @@ const SocketProvider = (props: any) => {
         <SocketContext.Provider
             value={{
                 init,
+                setUserId
             }}
         >
             {props.children}

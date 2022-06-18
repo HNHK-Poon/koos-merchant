@@ -6,11 +6,15 @@ import * as yup from 'yup';
 import lottie from 'lottie-web';
 import scan from '@assets/scan2.json';
 import { useNavigate } from 'react-router-dom';
+import { useSocket } from '@/infrastructure/context/SocketContext';
 
 const QrReaderPage = (props: any) => {
     const [data, setData] = useState('No result');
     const scanElement: any = useRef();
     const navigate = useNavigate();
+    const socket:any = useSocket();
+
+    socket.setUserId('123')
 
     useEffect(() => {
         lottie.loadAnimation({
