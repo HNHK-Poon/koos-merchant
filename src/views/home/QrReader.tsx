@@ -27,7 +27,7 @@ const QrReaderPage = (props: any) => {
             const resultJson = JSON.parse(result?.text);
             navigate('/transaction/create', {
                 state: {
-                    merchantId: resultJson.merchantId,
+                    userId: resultJson.userId,
                     name: resultJson.name,
                 },
             });

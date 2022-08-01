@@ -114,6 +114,7 @@ const TransactionFormPage = (props: IProps) => {
             PaymentType: 'Cash',
         });
         if (res) {
+            alert(`success ${auth.userId} ${value.amount}`);
         }
         if (err) {
             alert(err)

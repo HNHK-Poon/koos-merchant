@@ -3,7 +3,6 @@ import HomePage from '@home/HomePage';
 import ActivityPage from '@activity/ActivityPage';
 import ProtectedRoute from './ProtectedRoute';
 import QrPage from '@home/QrPage';
-import QrReaderPage from '@/views/transaction/QrReader';
 import LoginPage from '@/views/auth/LoginPage';
 import SignUpInfoPage from '@/views/auth/SignUpInfoPage';
 import SignUpVerifyPage from '@/views/auth/SignUpVerifyPage';
@@ -16,6 +15,7 @@ import { editAuth } from '@/infrastructure/state/auth';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import TopUpPage from '@/views/transaction/topup/TopUpPage';
+import QrReaderPage from '@/views/home/QrReader';
 // import Home from "@/views/home/Home";
 
 const AppRouter = () => {
@@ -48,14 +48,6 @@ const AppRouter = () => {
                 element={
                     <ProtectedRoute>
                         <QrPage />
-                    </ProtectedRoute>
-                }
-            />
-            <Route
-                path="/qrreader"
-                element={
-                    <ProtectedRoute>
-                        <QrReaderPage />
                     </ProtectedRoute>
                 }
             />
