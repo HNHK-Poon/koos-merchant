@@ -90,10 +90,10 @@ const HomePage = () => {
                 <div className="absolute top-15pc w-90pc mx-5pc z-20">
                     <MenuWidget />
                 </div>
-                <div className="absolute top-25pc w-90pc mx-5pc z-10">
+                <div className="absolute top-30pc w-90pc mx-5pc z-10">
                     <BlockWidget />
                 </div>
-                <div className="absolute top-40pc w-90pc mx-5pc z-10">
+                <div className="absolute top-50pc w-90pc mx-5pc z-10">
                     <HistoryWidget />
                 </div>
             </div>
