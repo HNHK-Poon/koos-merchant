@@ -61,8 +61,13 @@ const QrReaderPage = (props: any) => {
 
     const onResult = (result: any, error: any) => {
         if (!!result) {
-            setData(result?.text);
-            navigate('/transactionform', { state: { id: result?.text } });
+            const resultJson = JSON.parse(result?.text);
+            navigate('/transaction/create', {
+                state: {
+                    userId: resultJson.userId,
+                    name: resultJson.name,
+                },
+            });
         }
 
         if (!!error) {

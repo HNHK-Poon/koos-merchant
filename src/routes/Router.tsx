@@ -59,7 +59,14 @@ const AppRouter = () => {
                     </ProtectedRoute>
                 }
             />
-            <Route path="/transactionform" element={<TransactionFormPage />} />
+            <Route
+                path="/transaction/create"
+                element={
+                    <ProtectedRoute>
+                        <TransactionFormPage />
+                    </ProtectedRoute>
+                }
+            />
             <Route
                 path="/transactionmodal"
                 element={

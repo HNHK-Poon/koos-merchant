@@ -50,7 +50,7 @@ const BlockWidget = () => {
                     >
                         
                     </div>
-                    <div className='absolute top-0 w-full text-center text-primary-xl font-bold'>{percentage}%</div>
+                    <div className='absolute top-0 w-full text-center text-primary-xl font-bold'>{percentage.toFixed(1)}%</div>
                 </div>
                 <div>
                     <div className="h-10 w-10 bg-primary-xs text-center text-xl font-bold text-primary-l rounded-full border-4 border-primary-l">
