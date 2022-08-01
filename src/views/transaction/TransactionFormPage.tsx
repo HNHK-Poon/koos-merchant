@@ -117,7 +117,7 @@ const TransactionFormPage = (props: IProps) => {
             alert(`success ${auth.userId} ${value.amount}`);
         }
         if (err) {
-            alert(err)
+            alert(err);
         }
     };
 
@@ -163,7 +163,7 @@ const TransactionFormPage = (props: IProps) => {
                                 {username}
                             </div>
                         </div>
-                        <form onSubmit={handleSubmit(onSubmit)} className="p-8">
+                        <form className="p-8">
                             <Controller
                                 name="amount"
                                 control={control}
@@ -244,6 +244,7 @@ const TransactionFormPage = (props: IProps) => {
                 </div>
                 <div className="w-full p-8 mb-2">
                     <button
+                        onClick={handleSubmit(onSubmit)}
                         type="submit"
                         className="w-full p-4 bg-primary-m text-light-xl text-md font-bold rounded-md shadow-lg"
                     >
