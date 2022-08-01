@@ -56,6 +56,7 @@ const TransactionFormPage = (props: IProps) => {
     const data: IPaymentMethod[] = [{ label: 'Cash' }, { label: 'Voucher' }];
 
     const [userId, setUserId] = useState('');
+    const [username, setUsername] = useState('');
     // const id = '93a5bb5ab88442a0a0badf71b3bf60d5';
     // const { id } = location.state as ILocationState;
 
@@ -71,9 +72,12 @@ const TransactionFormPage = (props: IProps) => {
             });
             return;
         } else {
-            const { userId } = location.state as ILocationState;
+            const { userId, name } = location.state as ILocationState;
             if (userId) {
                 setUserId(userId);
+            }
+            if (name) {
+                setUsername(name);
             }
         }
     }, [location]);
@@ -149,12 +153,12 @@ const TransactionFormPage = (props: IProps) => {
                     <div className="absolute h-24 w-full bg-primary-m"></div>
                     <div className="absolute h-full w-full text-white mt-4">
                         <div className="text-white text-lg font-semibold px-10">
-                            Send to
+                            Request from
                         </div>
                         <div className="h-24 mx-8 text-white bg-light-xl shadow-md text-lg font-semibold rounded-xl flex justify-start items-center">
                             <HiUserCircle className="px-2 w-16 h-16 text-dark-xs" />
                             <div className="text-xl text-dark-s font-semibold">
-                                {merchant?.ShopName}
+                                {username}
                             </div>
                         </div>
                         <form onSubmit={handleSubmit(onSubmit)} className="p-8">
