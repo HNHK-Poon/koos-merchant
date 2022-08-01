@@ -60,7 +60,7 @@ const QrPage = ({ route }: any) => {
 
     return (
         <div className="relative bg-primary-m w-screen h-screen flex justify-center items-center flex flex-col">
-            <PageHeader title="Back"/>
+            <PageHeader title="Back" path='/'/>
             <div className="grow flex flex-col justify-center items-center">
                 <div className="w-full p-4 mb-2 bg-light-xl rounded-lg shadow-md text-center">
                     <p>{account.ShopName}</p>

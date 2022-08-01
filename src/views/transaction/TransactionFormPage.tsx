@@ -73,6 +73,7 @@ const TransactionFormPage = (props: IProps) => {
             return;
         } else {
             const { userId, name } = location.state as ILocationState;
+            alert(`${userId} ${name}`);
             if (userId) {
                 setUserId(userId);
             }
