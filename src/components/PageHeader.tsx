@@ -12,17 +12,20 @@ const PageHeader = (props: IProp) => {
     const navigate = useNavigate();
 
     const back = () => {
+        if (props.path) {
+            navigate(props.path);
+            return;
+        }
         navigate(-1);
     };
     return (
-        <div className="absolute bg-dark-s w-screen h-[56px] top-0 text-black text-xl flex justify-start items-center">
-            <div
-                onClick={back}
-                className="flex items-center"
-            >
-                <HiOutlineChevronLeft className="ml-4 w-10 h-10 text-white" />
+        <div className="bg-primary-m w-screen h-[64px] top-0 text-black text-xl flex justify-start items-center z-20">
+            <div onClick={back} className="pl-2 flex items-center">
+                <HiOutlineChevronLeft className="w-8 h-8 text-primary-xl" />
+                <div className="px-2 text-primary-xl text-xl font-semibold">
+                    {props.title}
+                </div>
             </div>
-            <div className='px-2 text-white text-xl font-semibold'>{props.title}</div>
         </div>
     );
 };

@@ -1,5 +1,5 @@
-export const transactionService = (rest: any) => {
-    const API_PREFIX = 'api/transaction';
+export const accountService = (rest: any) => {
+    const API_PREFIX = 'api';
     return {
         // pay: (data: any) => {
         //     return rest.post(`${API_PREFIX}/transaction/pay`, data);
@@ -7,9 +7,9 @@ export const transactionService = (rest: any) => {
         // register: (data: any) => {
         //     return rest.post(`${API_PREFIX}/register`, data);
         // },
-        getTransactions: () => {
+        getAccount: (id:string) => {
             return new Promise((resolve, reject) => {
-                rest.get(`${API_PREFIX}/own`, { params: { PageSize: 100, SortBy: "CreatedDateTime", SortOrder: 0} })
+                rest.get(`${API_PREFIX}/user/merchant/${id}`, {})
                     .then((res: any) => {
                         resolve([null, res]);
                     })

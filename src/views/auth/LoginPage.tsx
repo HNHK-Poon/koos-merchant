@@ -45,6 +45,7 @@ const LoginPage = () => {
                 if (token) {
                     Cookies.set('koos_merchant_token', success.data.Token);
                     const jwtInfo = jwtDecrypt(token);
+                    console.log('jwtInfo', jwtInfo);
                     dispatch(
                         editAuth({ key: 'userId', value: jwtInfo.userId })
                     );
@@ -63,16 +64,16 @@ const LoginPage = () => {
 
     return (
         <>
-            <div className="w-screen h-screen flex justify-center items-center bg-light-l">
+            <div className="w-screen h-screen flex justify-center items-center bg-light-xl">
                 <div className="block w-80">
                     <div className="text-center text-2xl font-extrabold text-dark-l">
                         KOOS BONUS
                     </div>
                     <form>
-                        <div className="px-2 py-2 mt-4 w-full bg-light-m rounded-full shadow-lg">
+                        <div className="px-2 py-2 mt-4 w-full bg-light-xl rounded-full shadow-lg">
                             <input type="hidden" name="remember" value="True" />
                             <div className="flex items-center">
-                                <div className="w-12 h-12 p-2 rounded-full bg-light-s">
+                                <div className="w-12 h-12 p-2 rounded-full bg-light-xl">
                                     <HiOutlineMail className="w-8 h-8" />
                                 </div>
                                 <input
@@ -84,14 +85,14 @@ const LoginPage = () => {
                                         'auth.form.emailPlaceholder'
                                     )}
                                     onChange={handleEmailChange}
-                                    className="p-2 bg-light-m w-full rounded-md focus:outline-none text-dark-m"
+                                    className="p-2 bg-light-xl w-full rounded-md focus:outline-none text-dark-m"
                                 />
                             </div>
                         </div>
-                        <div className="px-2 py-2 mt-4 w-full bg-light-m rounded-full shadow-lg">
+                        <div className="px-2 py-2 mt-4 w-full bg-light-xl rounded-full shadow-lg">
                             <input type="hidden" name="remember" value="True" />
                             <div className="flex items-center">
-                                <div className="w-12 h-12 p-2 rounded-full bg-light-s">
+                                <div className="w-12 h-12 p-2 rounded-full bg-light-xl">
                                     <BiLockOpenAlt className="w-8 h-8" />
                                 </div>
                                 <input
@@ -103,14 +104,14 @@ const LoginPage = () => {
                                         'auth.form.passwordPlaceholder'
                                     )}
                                     onChange={handlePasswordChange}
-                                    className="p-2 bg-light-m w-full rounded-md focus:outline-none text-dark-m"
+                                    className="p-2 bg-light-xl w-full rounded-md focus:outline-none text-dark-m"
                                 />
                             </div>
                         </div>
                         <button
                             onClick={handleSubmit}
                             type="submit"
-                            className="h-16 mt-4 w-full bg-primary-m text-light-l text-xl font-bold rounded-full shadow-lg"
+                            className="h-16 mt-4 w-full bg-primary-m text-light-xl text-xl font-bold rounded-full shadow-lg"
                         >
                             {t('auth.form.signinButtonText')}
                         </button>

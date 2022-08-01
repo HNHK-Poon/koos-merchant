@@ -11,6 +11,14 @@ module.exports = {
             colors: {
                 transparent: 'transparent',
                 primary: {
+                    xs: '#92F2B3',
+                    s: '#5CEB8E',
+                    m: '#1ADB5D',
+                    mg: '#18C956',
+                    l: '#13A446',
+                    xl: '#0D6E2F',
+                },
+                primarygold: {
                     xs: '#FFBC47',
                     s: '#FFAD1F',
                     m: '#F59B00',

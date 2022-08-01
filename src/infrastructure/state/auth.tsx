@@ -5,11 +5,12 @@ interface AuthState {
     password: string;
     contact: string;
     userId: string;
+    name: string;
     permissions: [];
 }
 
 interface Payload {
-  key:'email' | 'password' | 'contact' | 'userId' | 'permissions',
+  key:'email' | 'password' | 'contact' | 'userId' | 'permissions' | 'name',
   value: any
 }
 
@@ -18,6 +19,7 @@ const initialState: AuthState = {
     password: '',
     contact: '',
     userId: '',
+    name: '',
     permissions: []
 };
 

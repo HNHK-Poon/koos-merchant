@@ -17,6 +17,10 @@ import Cookies from 'js-cookie';
 import TransactionRecord from './@components/TransactionRecord';
 import { selectTransactions } from '@/infrastructure/state/transaction';
 import { useSelector } from 'react-redux';
+import AssetWidget from './@components/widget/AssetWidget';
+import MenuWidget from './@components/widget/MenuWidget';
+import ProfileWidget from './@components/widget/ProfileWidget';
+import BlockWidget from './@components/widget/BlockWidget';
 
 const HomePage = () => {
     const rest = useRest().authService;
@@ -26,79 +30,6 @@ const HomePage = () => {
     const navigate = useNavigate();
     const [socket, setSocket]: any = useState(null);
     const transactions = useSelector(selectTransactions);
-
-    // const transactions = [
-    //     {
-    //         user: 'Peter',
-    //         product: 'Item A',
-    //         amount: 'RM50.00',
-    //         status: 'Pending',
-    //         time: '7 minutes ago',
-    //     },
-    // ];
-
-    // console.log('home', data, error, loaded);
-
-    useEffect(() => {
-        // setSocket(io('ws://localhost:3030'));
-
-        lottie.loadAnimation({
-            container: document.querySelector('#wave')
-                ? document.querySelector('#wave')
-                : waveElement,
-            animationData: wave,
-        });
-        lottie.loadAnimation({
-            container: document.querySelector('#wave2')
-                ? document.querySelector('#wave2')
-                : waveElement,
-            animationData: payWave,
-        });
-        // Swal.fire({
-        //     title: 'Loading',
-        //     didOpen: () => {
-        //         Swal.showLoading();
-        //     },
-        // }).then((result) => {
-        //     /* Read more about handling dismissals below */
-        //     if (result.dismiss === Swal.DismissReason.timer) {
-        //         console.log('I was closed by the timer');
-        //     }
-        // });
-    }, []);
-
-    // useEffect(() => {
-    //     if (socket) {
-    //         socket.on('connect', () => {
-    //             console.log('connected', socket.id); // x8WIv7-mJelg7on_ALbx
-    //             socket.emit('join', {room:"notification"})
-    //             socket.emit('join', {room:sessionStorage.getItem('uid')})
-    //         });
-
-    //         socket.on('notification', (msg: any) => {
-    //             Swal.fire({
-    //                 text: msg.text,
-    //                 timer: 2000,
-    //                 showConfirmButton: false
-    //             })
-    //         })
-    //     }
-    // }, [socket]);
-
-    // if (error) {
-    //     Swal.fire({
-    //         title: 'Error',
-    //         timer: 1000,
-    //         didOpen: () => {
-    //             Swal.showLoading();
-    //         },
-    //     }).then((result) => {
-    //         /* Read more about handling dismissals below */
-    //         if (result.dismiss === Swal.DismissReason.timer) {
-    //             console.log('I was closed by the timer');
-    //         }
-    //     });
-    // }
 
     const goToQRPage = () => {
         navigate('/qrreader');
@@ -130,7 +61,28 @@ const HomePage = () => {
 
     return (
         <>
-            <div className="relative h-screen bg-light-l">
+            <div className="relative h-screen bg-light-xl overflow-y">
+                <div className="absolute top-4 right-4 z-10 p-3 rounded-full bg-light-xl shadow-md">
+                    <ProfileWidget />
+                </div>
+                <div className="absolute bg-gradient-to-b from-primary-mg to-primary-m w-full h-20pc">
+                    {/* <div
+                        ref={waveElement}
+                        id="wave"
+                        className="w-screen absolute bottom-0 translate-y-2"
+                    /> */}
+                </div>
+                <div className="absolute w-full top-5pc top-4 z-10">
+                    <AssetWidget />
+                </div>
+                <div className="absolute top-15pc w-90pc mx-5pc z-20">
+                    <MenuWidget />
+                </div>
+                <div className="absolute top-25pc w-90pc mx-5pc z-10">
+                    <BlockWidget />
+                </div>
+            </div>
+            {/* <div className="relative h-screen bg-light-l">
                 <div
                     onClick={signOut}
                     className="absolute top-4 right-4 z-10 p-3 rounded-full bg-light-s shadow-md"
@@ -165,8 +117,6 @@ const HomePage = () => {
                     </div>
                 </div>
 
-                {/* <QrButton /> */}
-                {/* <QRCode value="123" /> */}
                 <div className="absolute p-8 top-30pc w-full h-60pc">
                     <p className="text-bold text-xl py-2 font-bold text-dark-xs">
                         Transactions
@@ -188,7 +138,7 @@ const HomePage = () => {
                         })}
                     </div>
                 </div>
-            </div>
+            </div> */}
         </>
     );
 };

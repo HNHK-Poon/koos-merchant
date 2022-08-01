@@ -1,9 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './auth';
 import transactionsReducer from './transaction';
+import assetReducer from './asset';
+import blockReducer from './block';
+import accountReducer from './account';
 
 export const store = configureStore({
-    reducer: { auth: authReducer, transactions: transactionsReducer },
+    reducer: { auth: authReducer, transactions: transactionsReducer, asset: assetReducer, blocks: blockReducer, account: accountReducer },
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

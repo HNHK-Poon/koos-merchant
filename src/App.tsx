@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import AppRouter from './routes/Router';
@@ -6,15 +6,35 @@ import { store } from '@state/store';
 import { Provider } from 'react-redux';
 import AxiosInstanceProvider from './infrastructure/context/ApiContext';
 import { SocketProvider } from './infrastructure/context/SocketContext';
+import { createTheme } from '@mui/material';
+import { ThemeProvider } from '@mui/material/styles';
+import { BrowserRouter } from 'react-router-dom';
 
 function App() {
+    const theme = createTheme({
+        palette: {
+            primary: {
+                main: '#1ADB5D',
+            },
+        },
+    });
+    const [isLoading, setIsLoading] = useState(true);
+    useEffect(() => {
+        setTimeout(() => {
+            setIsLoading(false);
+        }, 1000);
+    }, []);
     return (
         <Provider store={store}>
-            <AxiosInstanceProvider>
-                <SocketProvider>
-                    <AppRouter />
-                </SocketProvider>
-            </AxiosInstanceProvider>
+            <BrowserRouter>
+                <AxiosInstanceProvider>
+                    <SocketProvider>
+                        <ThemeProvider theme={theme}>
+                            {!isLoading && <AppRouter />}
+                        </ThemeProvider>
+                    </SocketProvider>
+                </AxiosInstanceProvider>
+            </BrowserRouter>
         </Provider>
     );
 }
