@@ -33,6 +33,23 @@ export const walletSerice = (rest: any) => {
                         resolve([err, null]);
                     });
             });
-        }
+        },
+        getWalletTransactions: () => {
+            return new Promise((resolve, reject) => {
+                rest.get(`${API_PREFIX}/user/transaction`, {
+                    params: {
+                        PageSize: 100,
+                        SortBy: 'CreatedDateTime',
+                        SortOrder: 0,
+                    },
+                })
+                    .then((res: any) => {
+                        resolve([null, res]);
+                    })
+                    .catch((err: any) => {
+                        resolve([err, null]);
+                    });
+            });
+        },
     };
 };

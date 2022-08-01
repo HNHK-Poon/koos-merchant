@@ -21,7 +21,7 @@ const MenuWidget = () => {
         navigate('/qrcode', { state: { balance: 'RM20' } });
     };
     const goToScan = () => {
-        navigate('/scan');
+        navigate('/transaction/create');
         // navigate('/transaction/create');
     };
     const goToTransaction = () => {};

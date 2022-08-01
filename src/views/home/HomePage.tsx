@@ -14,13 +14,15 @@ import { RiUserSettingsLine } from 'react-icons/ri';
 import { AiOutlineScan } from 'react-icons/ai';
 import { io } from 'socket.io-client';
 import Cookies from 'js-cookie';
-import TransactionRecord from './@components/TransactionRecord';
-import { selectTransactions } from '@/infrastructure/state/transaction';
-import { useSelector } from 'react-redux';
+import { getTransactions, selectTransactions } from '@/infrastructure/state/transaction';
+import { useDispatch, useSelector } from 'react-redux';
 import AssetWidget from './@components/widget/AssetWidget';
 import MenuWidget from './@components/widget/MenuWidget';
 import ProfileWidget from './@components/widget/ProfileWidget';
 import BlockWidget from './@components/widget/BlockWidget';
+import { getBlockProperties, getBlocks, getCurrentBlock } from '@/infrastructure/state/block';
+import { useBlockService, useTransactionService } from '@/infrastructure/hook/useService';
+import HistoryWidget from './@components/widget/HistoryWidget';
 
 const HomePage = () => {
     const rest = useRest().authService;
@@ -28,8 +30,18 @@ const HomePage = () => {
     const { t } = useTranslation();
     const waveElement: any = useRef();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [socket, setSocket]: any = useState(null);
     const transactions = useSelector(selectTransactions);
+    const blockService = useBlockService()
+    const transacationService = useTransactionService();
+
+    useEffect(() => {
+        dispatch(getBlocks(blockService.getBlocks) as any);
+        dispatch(getBlockProperties(blockService.getBlockProperties) as any);
+        dispatch(getCurrentBlock(blockService.getCurrentBlock) as any);
+        dispatch(getTransactions(transacationService.getTransactions) as any);
+    }, []);
 
     const goToQRPage = () => {
         navigate('/qrreader');
@@ -81,64 +93,10 @@ const HomePage = () => {
                 <div className="absolute top-25pc w-90pc mx-5pc z-10">
                     <BlockWidget />
                 </div>
+                <div className="absolute top-40pc w-90pc mx-5pc z-10">
+                    <HistoryWidget />
+                </div>
             </div>
-            {/* <div className="relative h-screen bg-light-l">
-                <div
-                    onClick={signOut}
-                    className="absolute top-4 right-4 z-10 p-3 rounded-full bg-light-s shadow-md"
-                >
-                    <RiUserSettingsLine className="w-6 h-6 text-dark-l" />
-                </div>
-                <div className="relative bg-primary-m h-60">
-                    <div
-                        ref={waveElement}
-                        id="wave"
-                        className="w-screen absolute bottom-0 translate-y-2"
-                    />
-                </div>
-
-                <div
-                    onClick={goToQRPage}
-                    className="absolute w-full top-40 flex justify-center"
-                >
-                    <div className="w-fit shadow-lg rounded-2xl px-4 pt-2 bg-light-xl">
-                        <div className="flex w-fit justify-center items-center m-auto">
-                            <div>
-                                <div className="relative bg-light-m w-16 h-16 rounded-2xl overflow-hidden shadow-lg">
-                                    <div className="absolute top-0">
-                                        <AiOutlineScan className="z-10 w-16 h-16 text-gray-600/50" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <p className="text-center my-1 text-xs text-dark-xs">
-                            Click here to scan
-                        </p>
-                    </div>
-                </div>
-
-                <div className="absolute p-8 top-30pc w-full h-60pc">
-                    <p className="text-bold text-xl py-2 font-bold text-dark-xs">
-                        Transactions
-                    </p>
-                    <div className="w-full h-full bg-light-l rounded-xl p-4">
-                        {transactions.map((transaction, i) => {
-                            return (
-                                <TransactionRecord
-                                    key={i}
-                                    id={transaction.id}
-                                    user={transaction.user}
-                                    merchant={transaction.merchant}
-                                    name={transaction.name}
-                                    time={transaction.time.toString()}
-                                    amount={transaction.amount.toString()}
-                                    status={transaction.status}
-                                />
-                            );
-                        })}
-                    </div>
-                </div>
-            </div> */}
         </>
     );
 };
@@ -162,3 +120,7 @@ function QrButton() {
 }
 
 export default HomePage;
+function useTransacationService() {
+    throw new Error('Function not implemented.');
+}
+

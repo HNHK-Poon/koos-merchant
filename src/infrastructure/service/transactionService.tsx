@@ -19,7 +19,7 @@ export const transactionService = (rest: any) => {
         },
         getTransactions: () => {
             return new Promise((resolve, reject) => {
-                rest.get(`${API_PREFIX}/own`, { params: { PageSize: 100, SortBy: "CreatedDateTime", SortOrder: 0} })
+                rest.get(`${API_PREFIX}/merchant`, { params: { PageSize: 100, SortBy: "CreatedDateTime", SortOrder: 0} })
                     .then((res: any) => {
                         resolve([null, res]);
                     })

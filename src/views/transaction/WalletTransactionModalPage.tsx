@@ -16,12 +16,13 @@ import transaction, {
     store,
 } from '@/infrastructure/state/transaction';
 import { useSelector, useStore } from 'react-redux';
-import { useTransactionService } from '@/infrastructure/hook/useService';
+import { useTransactionService, useWalletService } from '@/infrastructure/hook/useService';
 import Swal from 'sweetalert2';
 import { useDispatch } from 'react-redux';
 import PageLoading from '@/components/PageLoading';
 import success from '@assets/icons/success.png';
 import { format } from 'date-fns';
+import { getWalletTransactions, selectWalletTransactionById } from '@/infrastructure/state/walletTransaction';
 
 interface IProps {}
 
@@ -40,19 +41,20 @@ interface ITransactionState {
     CreatedDateTime: string;
 }
 
-const TransactionModalPage = (props: IProps) => {
+const WalletTransactionModalPage = (props: IProps) => {
     const [isCreated, setIsCreated] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
     const dispatch = useDispatch();
     let { id }: any = useParams();
-    const transactionService = useTransactionService();
-    const transaction = useSelector((state: any) =>
-        selectTransactionById(state, id)
+    const walletSerice = useWalletService();
+    const walletTransaction = useSelector((state: any) =>
+        selectWalletTransactionById(state, id)
     );
 
     useEffect(() => {
-        dispatch(getTransactions(transactionService.getTransactions) as any);
+        console.log('get wallet transactions')
+        dispatch(getWalletTransactions(walletSerice.getWalletTransactions) as any);
     }, []);
 
     useEffect(() => {
@@ -66,8 +68,6 @@ const TransactionModalPage = (props: IProps) => {
         }
     }, [location, id]);
 
-    const { t } = useTranslation();
-
     const back = () => {
         if (isCreated) {
             navigate('/');
@@ -79,8 +79,8 @@ const TransactionModalPage = (props: IProps) => {
     return (
         <div className="bg-light-xl h-screen w-screen flex flex-col ">
             <PageHeader title="Details" />
-            {!transaction && <PageLoading />}
-            {transaction && (
+            {!walletTransaction && <PageLoading />}
+            {walletTransaction && (
                 <div className="relative grow h-48 w-full bg-light-xl">
                     <div className="absolute h-24 w-full bg-primary-m"></div>
                     <div className="absolute pt-12 h-full w-full text-white">
@@ -99,9 +99,9 @@ const TransactionModalPage = (props: IProps) => {
                             )}
 
                             <div className="text-center text-3xl text-dark-s ">
-                                + RM{transaction.Amount}
+                                + RM{walletTransaction.Amount}
                             </div>
-                            {transaction.Status === 0 && (
+                            {walletTransaction.Status === 0 && (
                                 <div className="flex p-2">
                                     <img
                                         className="w-4 h-4 m-auto"
@@ -116,7 +116,7 @@ const TransactionModalPage = (props: IProps) => {
                             <div className="text-center text-xs text-dark-s">
                                 Completed at{' '}
                                 {format(
-                                    new Date(transaction.CreatedDateTime),
+                                    new Date(walletTransaction.CreatedDateTime),
                                     'dd/MM/yyyy HH:mma'
                                 )}
                             </div>
@@ -140,11 +140,11 @@ const TransactionModalPage = (props: IProps) => {
                                                 </p>
                                             </div>
                                             <div className="inline-flex items-center text-xs  text-gray-900 ">
-                                                {transaction.id.slice(0, 24)}
+                                                {walletTransaction.id.slice(0, 24)}
                                             </div>
                                         </div>
                                     </li>
-                                    <li className="py-3 sm:py-4">
+                                    {/* <li className="py-3 sm:py-4">
                                         <div className="flex items-center space-x-4">
                                             <div className="flex-1 min-w-0">
                                                 <p className="text-xs font-light text-gray-900 truncate ">
@@ -184,7 +184,7 @@ const TransactionModalPage = (props: IProps) => {
                                                     : 'Cash'}
                                             </div>
                                         </div>
-                                    </li>
+                                    </li> */}
                                 </ul>
                             </div>
                         </div>
@@ -213,10 +213,10 @@ const TransactionModalPage = (props: IProps) => {
                 </div>
             )}
 
-            {transaction && (
+            {walletTransaction && (
                 <button
                     onClick={back}
-                    className="text-center mx-4 mb-8 p-2 text-base bg-primary-m text-white uppercase rounded-md shadow-md"
+                    className="text-center mx-4 mb-8 p-2 text-base bg-primary-l text-white uppercase rounded-md shadow-md"
                 >
                     Done
                 </button>
@@ -225,6 +225,6 @@ const TransactionModalPage = (props: IProps) => {
     );
 };
 
-TransactionModalPage.propTypes = {};
+WalletTransactionModalPage.propTypes = {};
 
-export default TransactionModalPage;
+export default WalletTransactionModalPage;

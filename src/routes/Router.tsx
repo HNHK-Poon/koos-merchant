@@ -16,6 +16,7 @@ import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import TopUpPage from '@/views/transaction/topup/TopUpPage';
 import QrReaderPage from '@/views/home/QrReader';
+import WalletTransactionModalPage from '@/views/transaction/WalletTransactionModalPage';
 // import Home from "@/views/home/Home";
 
 const AppRouter = () => {
@@ -60,10 +61,18 @@ const AppRouter = () => {
                 }
             />
             <Route
-                path="/transactionmodal"
+                path="/transaction/:id"
                 element={
                     <ProtectedRoute>
                         <TransactionModalPage />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path="/wallettransaction/:id"
+                element={
+                    <ProtectedRoute>
+                        <WalletTransactionModalPage />
                     </ProtectedRoute>
                 }
             />

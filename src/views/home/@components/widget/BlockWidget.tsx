@@ -13,7 +13,7 @@ import {
 const BlockWidget = () => {
     const navigate = useNavigate();
     const toReward = () => {
-        navigate('reward');
+        // navigate('reward');
     };
     // const blocks = blocksSelectors.selectAll;
     const blocks = useSelector(selectBlocks);

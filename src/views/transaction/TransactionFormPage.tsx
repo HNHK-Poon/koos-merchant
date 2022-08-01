@@ -32,7 +32,7 @@ interface IMerchant {
 }
 
 interface IPaymentMethod {
-    label: 'Cash' | 'Voucher';
+    label: 'Cash' | 'Voucher' | 'Ewallet';
 }
 
 interface ILocationState {
@@ -53,35 +53,35 @@ const TransactionFormPage = (props: IProps) => {
     const [open, setOpen] = useState(false);
     const [selectedMethod, setSelectedMethod] =
         useState<IPaymentMethod['label']>('Cash');
-    const data: IPaymentMethod[] = [{ label: 'Cash' }, { label: 'Voucher' }];
+    const data: IPaymentMethod[] = [{ label: 'Cash' }, { label: 'Ewallet' }];
 
     const [userId, setUserId] = useState('');
     const [username, setUsername] = useState('');
     // const id = '93a5bb5ab88442a0a0badf71b3bf60d5';
     // const { id } = location.state as ILocationState;
 
-    useEffect(() => {
-        if (location.state === undefined || location.state === null) {
-            Swal.fire({
-                icon: 'error',
-                text: 'Invalid QR Code',
-                timer: 2000,
-                showConfirmButton: false,
-            }).then(() => {
-                // navigate('/');
-            });
-            return;
-        } else {
-            const { userId, name } = location.state as ILocationState;
-            alert(`${userId} ${name}`);
-            if (userId) {
-                setUserId(userId);
-            }
-            if (name) {
-                setUsername(name);
-            }
-        }
-    }, [location]);
+    // useEffect(() => {
+    //     if (location.state === undefined || location.state === null) {
+    //         Swal.fire({
+    //             icon: 'error',
+    //             text: 'Invalid QR Code',
+    //             timer: 2000,
+    //             showConfirmButton: false,
+    //         }).then(() => {
+    //             // navigate('/');
+    //         });
+    //         return;
+    //     } else {
+    //         const { userId, name } = location.state as ILocationState;
+    //         alert(`${userId} ${name}`);
+    //         if (userId) {
+    //             setUserId(userId);
+    //         }
+    //         if (name) {
+    //             setUsername(name);
+    //         }
+    //     }
+    // }, [location]);
 
     const schema = yup
         .object({
@@ -106,19 +106,12 @@ const TransactionFormPage = (props: IProps) => {
     });
 
     const onSubmit = async (value: any) => {
-        console.log('submit', value);
-        const [err, res] = await transactionService.createTransaction({
-            ProductName: merchant?.ShopName, //e43f28b5a412414e8c9056bf961394a8
-            MerchantId: auth.userId,
+        console.log('submit', value, merchant?.ShopName);
+        navigate('/scan', {state: {
+            ProductName: merchant?.ShopName, 
             Amount: value.amount,
             PaymentType: 'Cash',
-        });
-        if (res) {
-            alert(`success ${auth.userId} ${value.amount}`);
-        }
-        if (err) {
-            alert(err);
-        }
+        }});    
     };
 
     const AmountTextField = styled(TextField)({
@@ -136,15 +129,15 @@ const TransactionFormPage = (props: IProps) => {
     });
 
     useEffect(() => {
-        const getMerchant = async () => {
-            const [err, res] = await accountService.getMerchant(auth.userId);
+        const getAccount = async () => {
+            const [err, res] = await accountService.getAccount(auth.userId);
             if (res) {
                 setMerchant(res.data);
             }
             console.log('merchant', res);
         };
 
-        getMerchant();
+        getAccount();
     }, []);
 
     return (
@@ -157,13 +150,13 @@ const TransactionFormPage = (props: IProps) => {
                         <div className="text-white text-lg font-semibold px-10">
                             Request from
                         </div>
-                        <div className="h-24 mx-8 text-white bg-light-xl shadow-md text-lg font-semibold rounded-xl flex justify-start items-center">
+                        <div className="h-24 mx-8 mb-4 text-white bg-light-xl shadow-md text-lg font-semibold rounded-xl flex justify-start items-center">
                             <HiUserCircle className="px-2 w-16 h-16 text-dark-xs" />
                             <div className="text-xl text-dark-s font-semibold">
                                 {username}
                             </div>
                         </div>
-                        <form className="p-8">
+                        <form className="px-8 py-2">
                             <Controller
                                 name="amount"
                                 control={control}
@@ -192,7 +185,7 @@ const TransactionFormPage = (props: IProps) => {
                                 )}
                             />
                         </form>
-                        <div className="w-full p-8">
+                        <div className="w-full px-8 py-2">
                             <Box className="rounded-xl bg-[#f0f0f0] pb-2">
                                 <ListItemButton
                                     alignItems="flex-start"
@@ -248,7 +241,7 @@ const TransactionFormPage = (props: IProps) => {
                         type="submit"
                         className="w-full p-4 bg-primary-m text-light-xl text-md font-bold rounded-md shadow-lg"
                     >
-                        Submit
+                        Continue
                     </button>
                 </div>
             </div>

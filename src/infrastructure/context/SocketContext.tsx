@@ -1,5 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { io } from 'socket.io-client';
 import { transactionUpdate } from '../state/transaction';
 
@@ -8,6 +9,7 @@ export const SocketContext = createContext({});
 const SocketProvider = (props: any) => {
     const [socket, setSocket] = useState<any>(null);
     const [userId, setUserId] = useState<any>(null);
+    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const init = (userId: any) => {
@@ -37,15 +39,18 @@ const SocketProvider = (props: any) => {
                 // );
             });
 
-            socket.on('transaction:confirmed', (params: any) => {
-                console.log('transaction:confirmed', params);
-                // dispatch(
-                //     transactionUpdate({
-                //         id: params.id,
-                //         changes: params.changes,
-                //     })
-                // );
+            socket.on('transaction:created', (message: any) => {
+                console.log('transaction:created', message);
+                navigate(`/transaction/${message.TransactionId}`, {state: {isCreated: false}})
+                // dispatch(transactionAdded(message));
             });
+
+            socket.on('wallet-transaction:created', (message: any) => {
+                console.log('wallet-transaction:created', message);
+                navigate(`/wallettransaction/${message.TransactionId}`, {state: {isCreated: false}})
+                // dispatch(transactionAdded(message));
+            });
+
         }
     }, [socket, userId]);
 

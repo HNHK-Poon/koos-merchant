@@ -4,9 +4,10 @@ import transactionsReducer from './transaction';
 import assetReducer from './asset';
 import blockReducer from './block';
 import accountReducer from './account';
+import walletTransactionReducer from './walletTransaction';
 
 export const store = configureStore({
-    reducer: { auth: authReducer, transactions: transactionsReducer, asset: assetReducer, blocks: blockReducer, account: accountReducer },
+    reducer: { auth: authReducer, transactions: transactionsReducer, asset: assetReducer, blocks: blockReducer, account: accountReducer, walletTransactions: walletTransactionReducer },
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

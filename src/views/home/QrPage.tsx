@@ -48,10 +48,11 @@ const QrPage = ({ route }: any) => {
 
     useEffect(() => {
         console.log("QR", auth.userId, auth.name)
-        setQrCodeValue(JSON.stringify({
-            merchantId: auth.userId,
-            name: auth.name,
-        }));
+        // setQrCodeValue(JSON.stringify({
+        //     merchantId: auth.userId,
+        //     name: auth.name,
+        // }));
+        setQrCodeValue(`https://koosbonus.com/?prm=0&merchant=${auth.userId}&name=${auth.name}`);
     }, [auth])
 
     const backToMain = () => {

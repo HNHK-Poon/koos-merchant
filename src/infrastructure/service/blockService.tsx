@@ -3,7 +3,7 @@ export const blockService = (rest: any) => {
     return {
         getBlocks: () => {
             return new Promise((resolve, reject) => {
-                rest.get(`${API_PREFIX}/own`, { params: { PageSize: 100 } })
+                rest.get(`${API_PREFIX}/merchant`, { params: { PageSize: 100 } })
                     .then((res: any) => {
                         resolve([null, res]);
                     })
@@ -14,7 +14,7 @@ export const blockService = (rest: any) => {
         },
         getCurrentBlock: () => {
             return new Promise((resolve, reject) => {
-                rest.get(`${API_PREFIX}/own/current`, {})
+                rest.get(`${API_PREFIX}/merchant/current`, {})
                     .then((res: any) => {
                         resolve([null, res]);
                     })
