@@ -68,7 +68,7 @@ const TransactionFormPage = (props: IProps) => {
                 timer: 2000,
                 showConfirmButton: false,
             }).then(() => {
-                navigate('/');
+                // navigate('/');
             });
             return;
         } else {
