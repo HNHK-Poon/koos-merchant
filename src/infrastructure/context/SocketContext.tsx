@@ -41,13 +41,13 @@ const SocketProvider = (props: any) => {
 
             socket.on('transaction:created', (message: any) => {
                 console.log('transaction:created', message);
-                navigate(`/transaction/${message.TransactionId}`, {state: {isCreated: false}})
+                navigate(`/transaction/${message.TransactionId}`, {state: {isCreated: true}})
                 // dispatch(transactionAdded(message));
             });
 
             socket.on('wallet-transaction:created', (message: any) => {
                 console.log('wallet-transaction:created', message);
-                navigate(`/wallettransaction/${message.TransactionId}`, {state: {isCreated: false}})
+                navigate(`/wallettransaction/${message.TransactionId}`, {state: {isCreated: true}})
                 // dispatch(transactionAdded(message));
             });
 
