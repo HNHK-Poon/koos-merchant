@@ -9,7 +9,7 @@ export const transactionService = (rest: any) => {
         // },
         createTransaction: (data: any) => {
             return new Promise((resolve, reject) => {
-                rest.post(`${API_PREFIX}/`, data)
+                rest.post(`${API_PREFIX}/merchant`, data)
                     .then((res: any) => {
                         resolve([null, res]);
                     }).catch((err: any) => {
