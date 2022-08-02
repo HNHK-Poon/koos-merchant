@@ -58,7 +58,12 @@ const QrReaderPage = (props: any) => {
             //         name: resultJson.name,
             //     },
             // });
-
+            alert(JSON.stringify({
+                ProductName: productName, //e43f28b5a412414e8c9056bf961394a8
+                UserId: resultJson.userId,
+                Amount: amount,
+                PaymentType: paymentType,
+            }));
             const [err, res] = await transactionService.createTransaction({
                 ProductName: productName, //e43f28b5a412414e8c9056bf961394a8
                 UserId: resultJson.userId,
