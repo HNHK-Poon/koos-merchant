@@ -78,117 +78,121 @@ const TransactionModalPage = (props: IProps) => {
 
     return (
         <div className="bg-light-xl h-screen w-screen flex flex-col ">
-            <PageHeader title="Details" />
-            {!transaction && <PageLoading />}
-            {transaction && (
-                <div className="relative grow h-48 w-full bg-light-xl">
-                    <div className="absolute h-24 w-full bg-primary-m"></div>
-                    <div className="absolute pt-12 h-full w-full text-white">
-                        {/* <div className="text-white text-lg font-semibold h-16 pt-8 px-2">
+            <PageHeader title="Details">
+                {!transaction && <PageLoading />}
+                {transaction && (
+                    <div className="relative grow h-48 w-full bg-light-xl">
+                        <div className="absolute h-24 w-full bg-primary-m"></div>
+                        <div className="absolute pt-12 h-full w-full text-white">
+                            {/* <div className="text-white text-lg font-semibold h-16 pt-8 px-2">
                             Request From
                         </div> */}
-                        <div className="h-32 mx-4 text-white bg-light-xl shadow-md text-lg rounded-xl flex flex-col justify-center items-center">
-                            {isCreated && (
-                                <div>
-                                    <img
-                                        className="w-8 h-8 m-auto"
-                                        src={success}
-                                        alt=""
-                                    />
-                                </div>
-                            )}
-
-                            <div className="text-center text-3xl text-dark-s ">
-                                + RM{transaction.Amount}
-                            </div>
-                            {transaction.Status === 0 && (
-                                <div className="flex p-2">
-                                    <img
-                                        className="w-4 h-4 m-auto"
-                                        src={success}
-                                        alt=""
-                                    />{' '}
-                                    <p className="text-sm text-dark-s px-2">
-                                        Success
-                                    </p>
-                                </div>
-                            )}
-                            <div className="text-center text-xs text-dark-s">
-                                Completed at{' '}
-                                {format(
-                                    new Date(transaction.CreatedDateTime),
-                                    'dd/MM/yyyy HH:mma'
+                            <div className="h-32 mx-4 text-white bg-light-xl shadow-md text-lg rounded-xl flex flex-col justify-center items-center">
+                                {isCreated && (
+                                    <div>
+                                        <img
+                                            className="w-8 h-8 m-auto"
+                                            src={success}
+                                            alt=""
+                                        />
+                                    </div>
                                 )}
+
+                                <div className="text-center text-3xl text-dark-s ">
+                                    + RM{transaction.Amount}
+                                </div>
+                                {transaction.Status === 0 && (
+                                    <div className="flex p-2">
+                                        <img
+                                            className="w-4 h-4 m-auto"
+                                            src={success}
+                                            alt=""
+                                        />{' '}
+                                        <p className="text-sm text-dark-s px-2">
+                                            Success
+                                        </p>
+                                    </div>
+                                )}
+                                <div className="text-center text-xs text-dark-s">
+                                    Completed at{' '}
+                                    {format(
+                                        new Date(transaction.CreatedDateTime),
+                                        'dd/MM/yyyy HH:mma'
+                                    )}
+                                </div>
                             </div>
-                        </div>
-                        <div className="p-4 mt-4 mx-4 bg-white rounded-lg border shadow-md sm:p-8 ">
-                            <div className="flex justify-start items-center mb-4">
-                                <h5 className="text-lg leading-none text-dark-m ">
-                                    Transaction Info
-                                </h5>
+                            <div className="p-4 mt-4 mx-4 bg-white rounded-lg border shadow-md sm:p-8 ">
+                                <div className="flex justify-start items-center mb-4">
+                                    <h5 className="text-lg leading-none text-dark-m ">
+                                        Transaction Info
+                                    </h5>
+                                </div>
+                                <div className="flow-root">
+                                    <ul
+                                        role="list"
+                                        className="divide-y divide-gray-200 "
+                                    >
+                                        <li className="py-3 sm:py-4">
+                                            <div className="flex items-center space-x-4">
+                                                <div className="flex-1 min-w-0">
+                                                    <p className="text-xs font-light text-gray-900 truncate ">
+                                                        Transaction ID
+                                                    </p>
+                                                </div>
+                                                <div className="inline-flex items-center text-xs  text-gray-900 ">
+                                                    {transaction.id.slice(
+                                                        0,
+                                                        24
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li className="py-3 sm:py-4">
+                                            <div className="flex items-center space-x-4">
+                                                <div className="flex-1 min-w-0">
+                                                    <p className="text-xs font-light text-gray-900 truncate ">
+                                                        Product Name
+                                                    </p>
+                                                </div>
+                                                <div className="inline-flex items-center text-xs  text-gray-900 ">
+                                                    {transaction.ProductName}
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li className="py-3 sm:py-4">
+                                            <div className="flex items-center space-x-4">
+                                                <div className="flex-1 min-w-0">
+                                                    <p className="text-xs font-light  text-gray-900 truncate ">
+                                                        Merchant ID
+                                                    </p>
+                                                </div>
+                                                <div className="inline-flex items-center text-xs  text-gray-900 ">
+                                                    {transaction.MerchantId.slice(
+                                                        0,
+                                                        24
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li className="py-3 sm:py-4">
+                                            <div className="flex items-center space-x-4">
+                                                <div className="flex-1 min-w-0">
+                                                    <p className="text-xs font-light  text-gray-900 truncate ">
+                                                        Payment Method
+                                                    </p>
+                                                </div>
+                                                <div className="inline-flex items-center text-xs  text-gray-900 ">
+                                                    {transaction.PaymentType ===
+                                                    0
+                                                        ? 'E-Wallet'
+                                                        : 'Cash'}
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
-                            <div className="flow-root">
-                                <ul
-                                    role="list"
-                                    className="divide-y divide-gray-200 "
-                                >
-                                    <li className="py-3 sm:py-4">
-                                        <div className="flex items-center space-x-4">
-                                            <div className="flex-1 min-w-0">
-                                                <p className="text-xs font-light text-gray-900 truncate ">
-                                                    Transaction ID
-                                                </p>
-                                            </div>
-                                            <div className="inline-flex items-center text-xs  text-gray-900 ">
-                                                {transaction.id.slice(0, 24)}
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li className="py-3 sm:py-4">
-                                        <div className="flex items-center space-x-4">
-                                            <div className="flex-1 min-w-0">
-                                                <p className="text-xs font-light text-gray-900 truncate ">
-                                                    Product Name
-                                                </p>
-                                            </div>
-                                            <div className="inline-flex items-center text-xs  text-gray-900 ">
-                                                {transaction.ProductName}
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li className="py-3 sm:py-4">
-                                        <div className="flex items-center space-x-4">
-                                            <div className="flex-1 min-w-0">
-                                                <p className="text-xs font-light  text-gray-900 truncate ">
-                                                    Merchant ID
-                                                </p>
-                                            </div>
-                                            <div className="inline-flex items-center text-xs  text-gray-900 ">
-                                                {transaction.MerchantId.slice(
-                                                    0,
-                                                    24
-                                                )}
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li className="py-3 sm:py-4">
-                                        <div className="flex items-center space-x-4">
-                                            <div className="flex-1 min-w-0">
-                                                <p className="text-xs font-light  text-gray-900 truncate ">
-                                                    Payment Method
-                                                </p>
-                                            </div>
-                                            <div className="inline-flex items-center text-xs  text-gray-900 ">
-                                                {transaction.PaymentType === 0
-                                                    ? 'E-Wallet'
-                                                    : 'Cash'}
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        {/* <div></div>
+                            {/* <div></div>
                         {transaction.status == 'pending' && (
                             <div className="w-full">
                                 <div className="w-full flex justify-center">
@@ -209,18 +213,19 @@ const TransactionModalPage = (props: IProps) => {
                                 </div>{' '}
                             </div>
                         )} */}
+                        </div>
                     </div>
-                </div>
-            )}
+                )}
 
-            {transaction && (
-                <button
-                    onClick={back}
-                    className="text-center mx-4 mb-8 p-2 text-base bg-primary-m text-white uppercase rounded-md shadow-md"
-                >
-                    Done
-                </button>
-            )}
+                {transaction && (
+                    <button
+                        onClick={back}
+                        className="text-center mx-4 mb-8 p-2 text-base bg-primary-m text-white uppercase rounded-md shadow-md"
+                    >
+                        Done
+                    </button>
+                )}
+            </PageHeader>
         </div>
     );
 };

@@ -9,6 +9,7 @@ import PageHeader from '@/components/PageHeader';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTransactionService } from '@/infrastructure/hook/useService';
 import { useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
 
 interface ILocationState {
     ProductName: string;
@@ -35,34 +36,21 @@ const QrReaderPage = (props: any) => {
         } else {
             const { Amount, PaymentType, ProductName } =
                 location.state as ILocationState;
-            if (
-                Amount !== undefined &&
-                PaymentType !== undefined &&
-                ProductName !== undefined
-            ) {
+            console.log(Amount, PaymentType, ProductName);
+            if (Amount) {
                 setAmount(Amount);
-                setPaymentType(PaymentType);
-                setProductName(ProductName);
             }
-            lottie.loadAnimation({
-                container: document.querySelector('#scan')
-                    ? document.querySelector('#scan')
-                    : scanElement,
-                animationData: scan,
-            });
+            if (PaymentType) {
+                setPaymentType(PaymentType);
+            }
             setIsLoading(false);
         }
-    }, [location]);
+    }, []);
 
     const onResult = async (result: any, error: any) => {
         if (!!result) {
             const resultJson = JSON.parse(result?.text);
-            // navigate('/transaction/create', {
-            //     state: {
-            //         userId: resultJson.userId,
-            //         name: resultJson.name,
-            //     },
-            // });
+            console.log(amount, paymentType, resultJson);
 
             const [err, res] = await transactionService.createTransaction({
                 ProductName: productName, //e43f28b5a412414e8c9056bf961394a8
@@ -71,10 +59,22 @@ const QrReaderPage = (props: any) => {
                 PaymentType: paymentType,
             });
             if (res) {
-                // alert(`success ${resultJson.userId} ${amount}`);
+                Swal.fire({
+                    title: 'Success',
+                    text: 'Transaction Success',
+                    icon: 'success',
+                    timer: 2000,
+                    showConfirmButton: false,
+                });
             }
             if (err) {
-                alert(err);
+                Swal.fire({
+                    title: 'Error',
+                    text: err.response.data.message,
+                    icon: 'error',
+                    timer: 2000,
+                    showConfirmButton: false,
+                });
             }
         }
 
@@ -86,27 +86,35 @@ const QrReaderPage = (props: any) => {
     return (
         <>
             <div className="w-screen h-screen flex flex-col">
-                <PageHeader title="Back" />
-                <div className="flex justify-center items-center w-full grow">
-                    {amount && paymentType && productName && (
-                        <>
-                            <QrReader
-                                constraints={{
-                                    facingMode: { exact: 'environment' },
-                                }}
-                                onResult={onResult}
-                                className="w-full h-full bg-gray-500 flex justify-center items-center"
-                            />
-                        </>
-                    )}
-                    <div className="absolute h-35pc w-full top-0 bg-gray-500/50"></div>
-                    <div className="absolute h-35pc w-full bottom-0 bg-gray-500/50"></div>
-                    <div className="absolute h-30pc w-20pc top-35pc left-0 bg-gray-500/50"></div>
-                    <div className="absolute h-30pc w-20pc top-35pc right-0 bg-gray-500/50"></div>
-                    <div className="absolute h-30pc w-60pc ">
-                        <div ref={scanElement} id="scan" />
+                <PageHeader
+                    title="Back"
+                    path="/"
+                    childrenStyle="bg-black flex items-center justify-center overflow-hidden"
+                >
+                    <div className="flex justify-center items-center bg-dark">
+                        {!isLoading && (
+                            <div
+                                className="w-full h-full relative"
+                                ref={scanElement}
+                            >
+                                <QrReader
+                                    // constraints={{
+                                    //     facingMode: { exact: 'user' },
+                                    // }}
+                                    constraints={{
+                                        facingMode: { exact: 'environment' },
+                                    }}
+                                    onResult={onResult}
+                                    className="w-full h-full bg-dark flex justify-center"
+                                    containerStyle={{
+                                        width: '200vw',
+                                        backgroundColor: 'black',
+                                    }}
+                                />
+                            </div>
+                        )}
                     </div>
-                </div>
+                </PageHeader>
             </div>
         </>
     );

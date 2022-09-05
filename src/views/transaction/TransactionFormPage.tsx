@@ -32,7 +32,7 @@ interface IMerchant {
 }
 
 interface IPaymentMethod {
-    label: 'Cash' | 'Voucher' | 'Ewallet';
+    label: 'Ewallet' | 'Voucher' | 'Cash';
 }
 
 interface ILocationState {
@@ -52,8 +52,8 @@ const TransactionFormPage = (props: IProps) => {
     const [merchant, setMerchant] = useState<IMerchant>();
     const [open, setOpen] = useState(false);
     const [selectedMethod, setSelectedMethod] =
-        useState<IPaymentMethod['label']>('Cash');
-    const data: IPaymentMethod[] = [{ label: 'Cash' }, { label: 'Ewallet' }];
+        useState<IPaymentMethod['label']>('Ewallet');
+    const data: IPaymentMethod[] = [{ label: 'Ewallet' }, { label: 'Cash' }];
 
     const [userId, setUserId] = useState('');
     const [username, setUsername] = useState('');
@@ -106,12 +106,13 @@ const TransactionFormPage = (props: IProps) => {
     });
 
     const onSubmit = async (value: any) => {
-        console.log('submit', value, merchant?.ShopName);
-        navigate('/scan', {state: {
-            ProductName: merchant?.ShopName, 
-            Amount: value.amount,
-            PaymentType: 'Cash',
-        }});    
+        console.log('submit', value, merchant?.ShopName, selectedMethod);
+        navigate('/scan', {
+            state: {
+                Amount: value.amount,
+                PaymentType: selectedMethod,
+            },
+        });
     };
 
     const AmountTextField = styled(TextField)({
@@ -125,6 +126,7 @@ const TransactionFormPage = (props: IProps) => {
 
         '& #filled-textarea': {
             fontSize: '2rem',
+            backgroundColor: 'white',
         },
     });
 
@@ -142,108 +144,116 @@ const TransactionFormPage = (props: IProps) => {
 
     return (
         <>
-            <div className="bg-light-xl fixed h-screen w-screen flex flex-col">
-                <PageHeader title="Create Transaction" />
-                <div className="relative grow w-full bg-light-xl">
-                    <div className="absolute h-24 w-full bg-primary-m"></div>
-                    <div className="absolute h-full w-full text-white mt-4">
-                        <div className="text-white text-lg font-semibold px-10">
-                            Request from
-                        </div>
-                        <div className="h-24 mx-8 mb-4 text-white bg-light-xl shadow-md text-lg font-semibold rounded-xl flex justify-start items-center">
-                            <HiUserCircle className="px-2 w-16 h-16 text-dark-xs" />
+            <div className="">
+                <PageHeader title="Create Transaction">
+                    <div className="flex flex-col h-full w-full bg-light-xl">
+                        <div className="h-24 w-full bg-primary-m"></div>
+                        <div className="h-full w-full text-white mt-4 -translate-y-[80px] grow">
+                            <div className="text-white text-lg font-semibold px-10">
+                                Receive
+                            </div>
+                            <div className="h-24 mx-8 mb-4 text-white bg-light-xl shadow-md text-lg font-semibold rounded-xl flex justify-start items-center">
+                                {/* <HiUserCircle className="px-2 w-16 h-16 text-dark-xs" />
                             <div className="text-xl text-dark-s font-semibold">
                                 {username}
+                            </div> */}
+                                <form className="px-8 py-2">
+                                    <Controller
+                                        name="amount"
+                                        control={control}
+                                        render={({ field }) => (
+                                            <AmountTextField
+                                                {...field}
+                                                color="primary"
+                                                className="w-full"
+                                                id="filled-textarea"
+                                                label="Enter Amount (RM)"
+                                                placeholder="Amount"
+                                                variant="filled"
+                                                type={'number'}
+                                                size="medium"
+                                                error={!!errors.amount}
+                                                helperText={
+                                                    !!errors.amount ? (
+                                                        <span className="absolute">
+                                                            {
+                                                                'Enter a positive amount.'
+                                                            }
+                                                        </span>
+                                                    ) : (
+                                                        <span></span>
+                                                    )
+                                                }
+                                            />
+                                        )}
+                                    />
+                                </form>
+                            </div>
+
+                            <div className="w-full px-8 py-2">
+                                <Box className="rounded-xl bg-[#f0f0f0] pb-2">
+                                    <ListItemButton
+                                        alignItems="flex-start"
+                                        onClick={() => setOpen(!open)}
+                                    >
+                                        <ListItemText
+                                            primary="Select Receiving Method"
+                                            primaryTypographyProps={{
+                                                fontSize: 18,
+                                                color: 'black',
+                                                fontWeight: 'semibold',
+                                                mb: '2px',
+                                            }}
+                                            secondary={
+                                                open ? '' : selectedMethod
+                                            }
+                                            secondaryTypographyProps={{
+                                                noWrap: true,
+                                                fontSize: 14,
+                                                lineHeight: '16px',
+                                                color: open
+                                                    ? 'rgba(0,0,0,0)'
+                                                    : 'black',
+                                            }}
+                                            sx={{ my: 0 }}
+                                        />
+                                    </ListItemButton>
+                                    {open &&
+                                        data.map((item) => (
+                                            <ListItemButton
+                                                onClick={() => {
+                                                    setSelectedMethod(
+                                                        item.label
+                                                    );
+                                                    setOpen(false);
+                                                }}
+                                                key={item.label}
+                                                className=""
+                                            >
+                                                <ListItemText
+                                                    primary={item.label}
+                                                    primaryTypographyProps={{
+                                                        color: 'black',
+                                                        fontSize: 14,
+                                                        fontWeight: 'medium',
+                                                    }}
+                                                />
+                                            </ListItemButton>
+                                        ))}
+                                </Box>
                             </div>
                         </div>
-                        <form className="px-8 py-2">
-                            <Controller
-                                name="amount"
-                                control={control}
-                                render={({ field }) => (
-                                    <AmountTextField
-                                        {...field}
-                                        color="primary"
-                                        className="w-full"
-                                        id="filled-textarea"
-                                        label="Enter Amount (RM)"
-                                        placeholder="Amount"
-                                        variant="filled"
-                                        type={'number'}
-                                        size="medium"
-                                        error={!!errors.amount}
-                                        helperText={
-                                            !!errors.amount ? (
-                                                <span className="absolute">
-                                                    {'Enter a positive amount.'}
-                                                </span>
-                                            ) : (
-                                                <span></span>
-                                            )
-                                        }
-                                    />
-                                )}
-                            />
-                        </form>
-                        <div className="w-full px-8 py-2">
-                            <Box className="rounded-xl bg-[#f0f0f0] pb-2">
-                                <ListItemButton
-                                    alignItems="flex-start"
-                                    onClick={() => setOpen(!open)}
-                                >
-                                    <ListItemText
-                                        primary="Select Receiving Method"
-                                        primaryTypographyProps={{
-                                            fontSize: 18,
-                                            color: 'black',
-                                            fontWeight: 'semibold',
-                                            mb: '2px',
-                                        }}
-                                        secondary={open ? '' : selectedMethod}
-                                        secondaryTypographyProps={{
-                                            noWrap: true,
-                                            fontSize: 14,
-                                            lineHeight: '16px',
-                                            color: open
-                                                ? 'rgba(0,0,0,0)'
-                                                : 'black',
-                                        }}
-                                        sx={{ my: 0 }}
-                                    />
-                                </ListItemButton>
-                                {open &&
-                                    data.map((item) => (
-                                        <ListItemButton
-                                            onClick={() => {
-                                                setSelectedMethod(item.label);
-                                                setOpen(false);
-                                            }}
-                                            key={item.label}
-                                            className=""
-                                        >
-                                            <ListItemText
-                                                primary={item.label}
-                                                primaryTypographyProps={{
-                                                    color: 'black',
-                                                    fontSize: 14,
-                                                    fontWeight: 'medium',
-                                                }}
-                                            />
-                                        </ListItemButton>
-                                    ))}
-                            </Box>
+                        <div className="w-full p-8 mb-2">
+                            <button
+                                onClick={handleSubmit(onSubmit)}
+                                type="submit"
+                                className="w-full p-4 bg-primary-m text-light-xl text-md font-bold rounded-md shadow-lg"
+                            >
+                                Continue
+                            </button>
                         </div>
                     </div>
-                </div>
-                <div className="w-full p-8 mb-2">
-                    <button
-                        onClick={handleSubmit(onSubmit)}
-                        type="submit"
-                        className="w-full p-4 bg-primary-m text-light-xl text-md font-bold rounded-md shadow-lg"
-                    >
-                        Continue
-                    </button>
-                </div>
+                </PageHeader>
             </div>
         </>
     );

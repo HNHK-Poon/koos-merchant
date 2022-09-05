@@ -9,7 +9,7 @@ export const accountService = (rest: any) => {
         // },
         getAccount: (id:string) => {
             return new Promise((resolve, reject) => {
-                rest.get(`${API_PREFIX}/user/merchant/${id}`, {})
+                rest.get(`${API_PREFIX}/user/merchant/all/${id}`, {})
                     .then((res: any) => {
                         resolve([null, res]);
                     })

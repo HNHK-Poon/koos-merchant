@@ -59,7 +59,8 @@ const TopUpPage = (props: any) => {
                 walletTransactionRes.data.WalletTransactionId
             );
             const [err, res] = await walletService.verifyTopup({
-                WalletTransactionId: walletTransactionRes.data.WalletTransactionId,
+                WalletTransactionId:
+                    walletTransactionRes.data.WalletTransactionId,
             });
             console.log(res);
         }
@@ -127,38 +128,38 @@ const TopUpPage = (props: any) => {
     });
 
     return (
-        <div className="fixed w-screen h-screen flex flex-col">
-            <PageHeader title="Top Up" />
-            <div className="grow">
-                <div className="w-full p-8">
-                    <Controller
-                        name="amount"
-                        control={control}
-                        render={({ field }) => (
-                            <AmountTextField
-                                {...field}
-                                color="primary"
-                                className="w-full"
-                                id="filled-textarea"
-                                label="Enter Amount (RM)"
-                                placeholder="Amount"
-                                variant="filled"
-                                type={'number'}
-                                size="medium"
-                                error={!!errors.amount}
-                                helperText={
-                                    !!errors.amount ? (
-                                        <span className="absolute">
-                                            {'Enter a positive amount.'}
-                                        </span>
-                                    ) : (
-                                        <span></span>
-                                    )
-                                }
-                            />
-                        )}
-                    />
-                    {/* <AmountTextField
+        <div className="">
+            <PageHeader title="Top Up">
+                <div className="flex flex-col">
+                    <div className="w-full p-8">
+                        <Controller
+                            name="amount"
+                            control={control}
+                            render={({ field }) => (
+                                <AmountTextField
+                                    {...field}
+                                    color="primary"
+                                    className="w-full"
+                                    id="filled-textarea"
+                                    label="Enter Amount (RM)"
+                                    placeholder="Amount"
+                                    variant="filled"
+                                    type={'number'}
+                                    size="medium"
+                                    error={!!errors.amount}
+                                    helperText={
+                                        !!errors.amount ? (
+                                            <span className="absolute">
+                                                {'Enter a positive amount.'}
+                                            </span>
+                                        ) : (
+                                            <span></span>
+                                        )
+                                    }
+                                />
+                            )}
+                        />
+                        {/* <AmountTextField
                         color="primary"
                         className="w-full"
                         id="filled-textarea"
@@ -169,75 +170,77 @@ const TopUpPage = (props: any) => {
                         size="medium"
                         {...register('amount')}
                     /> */}
-                    {/* <p className="px-2 text-red-600">
+                        {/* <p className="px-2 text-red-600">
                         {errors.amount?.message}
                     </p> */}
-                </div>
-                <div className="w-full px-8 grid grid-cols-3 md:grid-cols-6 gap-2">
-                    {defaultAmounts.map((amount: any, index: number) => {
-                        return (
-                            <div
-                                key={index}
-                                className="flex justify-center items-center"
-                            >
-                                <DefaultAmountWidget {...amount} />
-                            </div>
-                        );
-                    })}
-                </div>
-                <div className="w-full p-8">
-                    <Box className="rounded-xl bg-[#f0f0f0] pb-2">
-                        <ListItemButton
-                            alignItems="flex-start"
-                            onClick={() => setOpen(!open)}
-                        >
-                            <ListItemText
-                                primary="Select Payment Method"
-                                primaryTypographyProps={{
-                                    fontSize: 18,
-                                    fontWeight: 'semibold',
-                                    mb: '2px',
-                                }}
-                                secondary={open ? '' : selectedMethod}
-                                secondaryTypographyProps={{
-                                    noWrap: true,
-                                    fontSize: 14,
-                                    lineHeight: '16px',
-                                    color: open ? 'rgba(0,0,0)' : 'rgba(0,0,0)',
-                                }}
-                                sx={{ my: 0 }}
-                            />
-                        </ListItemButton>
-                        {open &&
-                            data.map((item) => (
-                                <ListItemButton
-                                    onClick={() => {
-                                        setSelectedMethod(item.label);
-                                        setOpen(false);
-                                    }}
-                                    key={item.label}
-                                    className=""
+                    </div>
+                    <div className="w-full px-8 grid grid-cols-3 md:grid-cols-6 gap-2">
+                        {defaultAmounts.map((amount: any, index: number) => {
+                            return (
+                                <div
+                                    key={index}
+                                    className="flex justify-center items-center"
                                 >
-                                    <ListItemText
-                                        primary={item.label}
-                                        primaryTypographyProps={{
-                                            fontSize: 14,
-                                            fontWeight: 'medium',
+                                    <DefaultAmountWidget {...amount} />
+                                </div>
+                            );
+                        })}
+                    </div>
+                    <div className="w-full p-8">
+                        <Box className="rounded-xl bg-[#f0f0f0] pb-2">
+                            <ListItemButton
+                                alignItems="flex-start"
+                                onClick={() => setOpen(!open)}
+                            >
+                                <ListItemText
+                                    primary="Select Payment Method"
+                                    primaryTypographyProps={{
+                                        fontSize: 18,
+                                        fontWeight: 'semibold',
+                                        mb: '2px',
+                                    }}
+                                    secondary={open ? '' : selectedMethod}
+                                    secondaryTypographyProps={{
+                                        noWrap: true,
+                                        fontSize: 14,
+                                        lineHeight: '16px',
+                                        color: open
+                                            ? 'rgba(0,0,0)'
+                                            : 'rgba(0,0,0)',
+                                    }}
+                                    sx={{ my: 0 }}
+                                />
+                            </ListItemButton>
+                            {open &&
+                                data.map((item) => (
+                                    <ListItemButton
+                                        onClick={() => {
+                                            setSelectedMethod(item.label);
+                                            setOpen(false);
                                         }}
-                                    />
-                                </ListItemButton>
-                            ))}
-                    </Box>
+                                        key={item.label}
+                                        className=""
+                                    >
+                                        <ListItemText
+                                            primary={item.label}
+                                            primaryTypographyProps={{
+                                                fontSize: 14,
+                                                fontWeight: 'medium',
+                                            }}
+                                        />
+                                    </ListItemButton>
+                                ))}
+                        </Box>
+                        <button
+                            onClick={handleSubmit(onSubmit)}
+                            type="submit"
+                            className="w-full text-center my-4 p-4 text-lg bg-primary-m text-white font-semibold uppercase rounded-lg"
+                        >
+                            Continue
+                        </button>
+                    </div>
                 </div>
-            </div>
-
-            <button
-                onClick={handleSubmit(onSubmit)}
-                type="submit"
-                className=" text-center m-4 p-4 text-xl bg-primary-m text-white font-semibold uppercase rounded-lg"
-            >
-                Continue
-            </button>
+            </PageHeader>
         </div>
     );
 };
