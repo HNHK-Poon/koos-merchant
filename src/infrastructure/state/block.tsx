@@ -23,16 +23,16 @@ type Block = {
 type BlockProperties = {
     BlockPropertiesId: string;
     Name: string;
-    BlockSpendSize: number,
-    Discount: number,
-    IsDefault: boolean,
+    BlockSpendSize: number;
+    Discount: number;
+    IsDefault: boolean;
     CreatedBy: string;
     CreatedByName: string;
     CreatedDateTime: string;
     LastUpdatedBy: string;
     LastUpdatedByName: string;
     LastUpdatedDateTime: string;
-    DomainEvents: []
+    DomainEvents: [];
 };
 
 export const getCurrentBlock = createAsyncThunk(
@@ -42,6 +42,13 @@ export const getCurrentBlock = createAsyncThunk(
         const [err, res] = await service();
         if (res) {
             return res.data;
+        }
+        if (err.response.data.errorCode == 30001) {
+            return {
+                CurrentAmount: 0,
+            };
+        } else {
+            return {};
         }
     }
 );
@@ -60,6 +67,7 @@ export const getBlocks = createAsyncThunk(
             return copied;
         }
     }
+    
 );
 
 export const getBlockProperties = createAsyncThunk(
@@ -78,15 +86,18 @@ export const getBlockProperties = createAsyncThunk(
     }
 );
 
-
 const blocksAdapter = createEntityAdapter<Block>({});
 const blockPropertiesAdapter = createEntityAdapter<BlockProperties>({});
 
 export const { selectAll: selectBlocks, selectById: selectBlockById } =
     blocksAdapter.getSelectors<RootState>((state) => state.blocks.blocks);
 
-export const { selectAll: selectBlockProperties, selectById: selectBlockPropertiesById } =
-    blockPropertiesAdapter.getSelectors<RootState>((state) => state.blocks.blockProperties);
+export const {
+    selectAll: selectBlockProperties,
+    selectById: selectBlockPropertiesById,
+} = blockPropertiesAdapter.getSelectors<RootState>(
+    (state) => state.blocks.blockProperties
+);
 
 const blocksSlice = createSlice({
     name: 'blocks',
@@ -114,22 +125,25 @@ const blocksSlice = createSlice({
                 blocksAdapter.setAll(state.blocks, action.payload);
             }
         ),
-        builder.addCase(
-            getCurrentBlock.fulfilled,
-            (state, action: PayloadAction<Block>) => {
-                // The type signature on action.payload matches what we passed into the generic for `normalize`, allowing us to access specific properties on `payload.articles` if desired
-                console.log('action', action);
-                state.currentBlock = action.payload;
-            }
-        ),
-        builder.addCase(
-            getBlockProperties.fulfilled,
-            (state, action: PayloadAction<BlockProperties[]>) => {
-                // The type signature on action.payload matches what we passed into the generic for `normalize`, allowing us to access specific properties on `payload.articles` if desired
-                console.log('action', action);
-                blockPropertiesAdapter.setAll(state.blockProperties, action.payload);
-            }
-        )
+            builder.addCase(
+                getCurrentBlock.fulfilled,
+                (state, action: PayloadAction<Block>) => {
+                    // The type signature on action.payload matches what we passed into the generic for `normalize`, allowing us to access specific properties on `payload.articles` if desired
+                    console.log('action', action);
+                    state.currentBlock = action.payload;
+                }
+            ),
+            builder.addCase(
+                getBlockProperties.fulfilled,
+                (state, action: PayloadAction<BlockProperties[]>) => {
+                    // The type signature on action.payload matches what we passed into the generic for `normalize`, allowing us to access specific properties on `payload.articles` if desired
+                    console.log('action', action);
+                    blockPropertiesAdapter.setAll(
+                        state.blockProperties,
+                        action.payload
+                    );
+                }
+            );
     },
 });
 
@@ -146,9 +160,10 @@ type RootState = ReturnType<typeof store.getState>;
 export const blocksSelectors = blocksAdapter.getSelectors<RootState>(
     (state) => state.blocks.blocks
 );
-export const blockPropertiesSelectors = blockPropertiesAdapter.getSelectors<RootState>(
-    (state) => state.blocks.blockProperties
-);
+export const blockPropertiesSelectors =
+    blockPropertiesAdapter.getSelectors<RootState>(
+        (state) => state.blocks.blockProperties
+    );
 
 export const {} = blocksSlice.actions;
 
