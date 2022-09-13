@@ -1,5 +1,6 @@
 export const transactionService = (rest: any) => {
     const API_PREFIX = 'api/transaction';
+    const TRANSMIT_PREfiX = 'transmit/transaction'
     return {
         // pay: (data: any) => {
         //     return rest.post(`${API_PREFIX}/transaction/pay`, data);
@@ -9,7 +10,7 @@ export const transactionService = (rest: any) => {
         // },
         createTransaction: (data: any) => {
             return new Promise((resolve, reject) => {
-                rest.post(`${API_PREFIX}/merchant`, data)
+                rest.post(`${TRANSMIT_PREfiX}/queue/merchantCreate`, data)
                     .then((res: any) => {
                         resolve([null, res]);
                     }).catch((err: any) => {

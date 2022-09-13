@@ -28,6 +28,7 @@ const QrReaderPage = (props: any) => {
     const [amount, setAmount] = useState(0);
     const [paymentType, setPaymentType] = useState('');
     const transactionService = useTransactionService();
+    const [isScanned, setIsScanned] = useState(false);
 
     useEffect(() => {
         if (location.state === undefined || location.state === null) {
@@ -48,9 +49,10 @@ const QrReaderPage = (props: any) => {
     }, []);
 
     const onResult = async (result: any, error: any) => {
-        if (!!result) {
+        if (!!result && !isScanned) {
             const resultJson = JSON.parse(result?.text);
             console.log(amount, paymentType, resultJson);
+            setIsScanned(true);
 
             const [err, res] = await transactionService.createTransaction({
                 ProductName: productName, //e43f28b5a412414e8c9056bf961394a8
