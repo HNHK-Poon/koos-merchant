@@ -24,7 +24,7 @@ const AxiosInstanceProvider = (props: Props) => {
     useEffect(() => {
         console.log("init interceptor")
         instanceRef.current.interceptors.request.use((request: any) => {
-            const token = Cookies.get('koos_merchant_token');
+            const token = Cookies.get('kosto_merchant_token');
             console.log("request", request, token)
             if (token) {
                 request.headers.common.Authorization = `Bearer ${token}`;

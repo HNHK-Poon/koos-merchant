@@ -67,7 +67,7 @@ const HomePage = () => {
     };
 
     const signOut = () => {
-        Cookies.remove('koos_merchant_token');
+        Cookies.remove('kosto_merchant_token');
         navigate('/login');
     };
 

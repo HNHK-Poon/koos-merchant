@@ -25,7 +25,7 @@ const isTokenExpired = (token: string) => {
 const ProtectedRoute = ({ children }: Props) => {
     const { t } = useTranslation();
     const socket:any = useSocket()
-    const token = Cookies.get('koos_merchant_token');
+    const token = Cookies.get('kosto_merchant_token');
     if (!token || isTokenExpired(token)) {
         Swal.fire({
             title: t('auth.alert.redirectAlertTitle'),

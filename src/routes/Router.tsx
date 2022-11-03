@@ -22,7 +22,7 @@ import WalletTransactionModalPage from '@/views/transaction/WalletTransactionMod
 const AppRouter = () => {
     const dispatch = useDispatch();
     const init = () => {
-        const token = Cookies.get('koos_merchant_token');
+        const token = Cookies.get('kosto_merchant_token');
         if (token) {
             const jwtInfo = jwtDecrypt(token);
             console.log('jwtInfo', jwtInfo);

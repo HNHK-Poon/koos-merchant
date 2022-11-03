@@ -32,7 +32,7 @@ const BlockWidget = () => {
         );
         setCurrentAmount(currentBlock.CurrentAmount);
         if(blockProperties.length > 0) {
-            setBlockSize(blockProperties.filter((bp) => bp.Name=="merchantBlock")[0].BlockSpendSize);
+            setBlockSize(blockProperties.filter((bp) => bp.Name=="merchant block properties")[0].BlockSpendSize);
             setPercentage(
                 (currentBlock.CurrentAmount / blockProperties[0].BlockSpendSize) * 100
             );

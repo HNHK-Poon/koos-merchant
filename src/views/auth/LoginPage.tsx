@@ -10,6 +10,7 @@ import { useAuthService } from '@/infrastructure/hook/useService';
 import { jwtDecrypt } from '@/infrastructure/seedworks/jwtVerify';
 import { useDispatch } from 'react-redux';
 import { editAuth } from '@/infrastructure/state/auth';
+import { BsTelephone } from 'react-icons/bs';
 
 const LoginPage = () => {
     const { t } = useTranslation();
@@ -19,10 +20,15 @@ const LoginPage = () => {
     const navigate = useNavigate();
 
     const [email, setEmail] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
     const [password, setPassword] = useState('');
 
     const handleEmailChange = (event: any) => {
         setEmail(event.target.value);
+    };
+
+    const handleContactChange = (event: any) => {
+        setPhoneNumber(event.target.value);
     };
 
     const handlePasswordChange = (event: any) => {
@@ -32,18 +38,18 @@ const LoginPage = () => {
     const handleSubmit = async (event: any) => {
         event.preventDefault();
         const res = await authService
-            .login({ Email: email, Password: password })
+            .login({ CountryCode:"+60", PhoneNumber: phoneNumber, Password: password })
             .then(async (success: any) => {
                 await Swal.fire({
                     icon: 'success',
-                    title: t('auth.alert.signinSuccessText'),
+                    text: t('auth.alert.signinSuccessText'),
                     timer: 2000,
                     showConfirmButton: false,
                 });
                 navigate('/');
                 const token = success.data.Token ? success.data.Token : '';
                 if (token) {
-                    Cookies.set('koos_merchant_token', success.data.Token);
+                    Cookies.set('kosto_merchant_token', success.data.Token);
                     const jwtInfo = jwtDecrypt(token);
                     console.log('jwtInfo', jwtInfo);
                     dispatch(
@@ -67,10 +73,10 @@ const LoginPage = () => {
             <div className="w-screen h-screen flex justify-center items-center bg-light-xl">
                 <div className="block w-80">
                     <div className="text-center text-2xl font-extrabold text-dark-l">
-                        KOOS BONUS
+                        KOSTO PREMIO
                     </div>
                     <form>
-                        <div className="px-2 py-2 mt-4 w-full bg-light-xl rounded-full shadow-lg">
+                        {/* <div className="px-2 py-2 mt-4 w-full bg-light-xl rounded-full shadow-lg">
                             <input type="hidden" name="remember" value="True" />
                             <div className="flex items-center">
                                 <div className="w-12 h-12 p-2 rounded-full bg-light-xl">
@@ -85,6 +91,25 @@ const LoginPage = () => {
                                         'auth.form.emailPlaceholder'
                                     )}
                                     onChange={handleEmailChange}
+                                    className="p-2 bg-light-xl w-full rounded-md focus:outline-none text-dark-m"
+                                />
+                            </div>
+                        </div> */}
+                        <div className="px-2 py-2 mt-4 w-full bg-light-xl rounded-full shadow-lg">
+                            <div className="flex items-center">
+                                <div className="w-12 h-12 p-2 rounded-full bg-light-xl">
+                                    <BsTelephone className="w-8 h-8" />
+                                </div>
+                                <span className="px-2 select-none">+60</span>
+                                <input
+                                    type="phone"
+                                    name="phone"
+                                    id="phone"
+                                    autoComplete="off"
+                                    placeholder={t(
+                                        'auth.form.phonePlaceholder'
+                                    )}
+                                    onChange={handleContactChange}
                                     className="p-2 bg-light-xl w-full rounded-md focus:outline-none text-dark-m"
                                 />
                             </div>

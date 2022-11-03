@@ -55,10 +55,12 @@ const QrReaderPage = (props: any) => {
             setIsScanned(true);
 
             const [err, res] = await transactionService.createTransaction({
-                ProductName: productName, //e43f28b5a412414e8c9056bf961394a8
+                ProductName: productName,
+                MerchantId: auth.userId, //e43f28b5a412414e8c9056bf961394a8
                 UserId: resultJson.userId,
                 Amount: amount,
                 PaymentType: paymentType,
+                UserWalletVerificationToken: resultJson.token,
             });
             if (res) {
                 Swal.fire({
