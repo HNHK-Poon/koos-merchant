@@ -6,6 +6,7 @@ import { transactionService } from '../service/transactionService';
 import { walletSerice } from '../service/walletService';
 import { blockService } from '../service/blockService';
 import { accountService } from '../service/accountService';
+import Swal from 'sweetalert2';
 
 export const AxiosContext = createContext<any>({} as any);
 
@@ -32,11 +33,29 @@ const AxiosInstanceProvider = (props: Props) => {
 
             return request;
         });
-        instanceRef.current.interceptors.response.use((response: any) => {
-            console.log('response:', response);
-
-            return response;
-        });
+        instanceRef.current.interceptors.response.use(
+            function (response) {
+                // Any status code that lie within the range of 2xx cause this function to trigger
+                // Do something with response data
+                console.log('response intercept', response);
+                return response;
+            },
+            function (error) {
+                console.log('error intercept', error);
+                if (error.response.status === 401) {
+                    Cookies.remove('kosto_merchant_token');
+                    Swal.fire({
+                        text: 'Session expired. Please login again',
+                        icon: 'error',
+                        showConfirmButton: false,
+                        timer: 2000,
+                    }).then((result) => {
+                        window.location.href = '/login';
+                    });
+                }
+                return Promise.reject(error);
+            }
+        );
     }, []);
 
     const _authService = authService(instanceRef.current);
