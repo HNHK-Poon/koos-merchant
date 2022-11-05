@@ -9,6 +9,8 @@ import { SocketProvider } from './infrastructure/context/SocketContext';
 import { createTheme } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import { BrowserRouter } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from 'react-query';
+
 
 function App() {
     const theme = createTheme({
@@ -29,9 +31,11 @@ function App() {
             <BrowserRouter>
                 <AxiosInstanceProvider>
                     <SocketProvider>
-                        <ThemeProvider theme={theme}>
-                            {!isLoading && <AppRouter />}
-                        </ThemeProvider>
+                        <QueryClientProvider client={new QueryClient()}>
+                            <ThemeProvider theme={theme}>
+                                {!isLoading && <AppRouter />}
+                            </ThemeProvider>
+                        </QueryClientProvider>
                     </SocketProvider>
                 </AxiosInstanceProvider>
             </BrowserRouter>

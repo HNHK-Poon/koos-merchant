@@ -18,5 +18,8 @@ export const accountService = (rest: any) => {
                     });
             });
         },
+        getMerchantOwn: () => {
+            return rest.get(`${API_PREFIX}/profile/merchant/own`);
+        }
     };
 };

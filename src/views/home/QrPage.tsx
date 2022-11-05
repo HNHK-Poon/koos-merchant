@@ -13,6 +13,7 @@ import {
 import { useDispatch } from 'react-redux';
 import PageHeader from '@/components/PageHeader';
 import { getAccount, selectAccount } from '@/infrastructure/state/account';
+import { useQuery } from 'react-query';
 
 const QrPage = ({ route }: any) => {
     const barCode: any = useRef();
@@ -24,25 +25,45 @@ const QrPage = ({ route }: any) => {
     const auth = useSelector((state: { auth: any }) => state.auth);
     const [qrCodeValue, setQrCodeValue] = useState('');
 
-    console.log('auth', auth , account);
+    console.log('auth', auth, account);
 
     const { state }: any = useLocation();
     console.log('state', state);
 
+    const {
+        isLoading,
+        isError,
+        data: merchant,
+        error,
+        isSuccess,
+    } = useQuery<any, Error>(
+        ['merchant', { id: auth.userId }],
+        () => accountService.getMerchantOwn(),
+        { staleTime: 60000 }
+    );
+
+    if (isSuccess) {
+        console.log('successfully get own', merchant);
+    }
+
     useEffect(() => {
-        dispatch(
-            getAccount(() => accountService.getAccount(auth.userId)) as any
-        );
+        // dispatch(
+        //     getAccount(() => accountService.getAccount(auth.userId)) as any
+        // );
         dispatch(getWalletBalance(walletSerice.getBalance) as any);
+        const timestamp = (new Date().getTime() * 3).toString();
         try {
             // The return value is the canvas element
             const canvas = bwipjs.toCanvas('barCode', {
                 bcid: 'code128', // Barcode type
-                text: auth.userId
-                    ? auth.userId.slice(0, 12)
-                    : 'xya812a0-8axa8-shax8a', // Text to encode
+                text:
+                    timestamp.substring(0, 3) +
+                    ' ' +
+                    timestamp.substring(3, 9) +
+                    ' ' +
+                    timestamp.substring(9, 13), // Text to encode
                 scale: 1, // 3x scaling factor
-                height: 15, // Bar height, in millimeters
+                height: 20, // Bar height, in millimeters
                 includetext: true, // Show human-readable text
                 textxalign: 'center', // Always good to set this
             });
@@ -68,15 +89,29 @@ const QrPage = ({ route }: any) => {
 
     return (
         <div className="">
-            <PageHeader title="Back" path="/" childrenStyle='bg-primary-m'>
+            <PageHeader title="Back" path="/" childrenStyle="bg-primary-m">
                 <div className="flex flex-col justify-center items-center p-4">
-                    <div className="w-full p-4 mb-2 bg-light-xl rounded-lg shadow-md text-center text-2xl">
-                        <p>{account.ShopName}</p>
-                    </div>
-                    <div className="bg-light-xl flex flex-col justify-center items-center rounded-lg overflow-hidden w-full p-4">
-                        <canvas className="py-4 m-auto" id="barCode"></canvas>
-                        <QRCode className="" value={qrCodeValue} />
-                    </div>
+                    {isLoading && <div>Loading...</div>}
+                    {isError && <div>Error: {error.message}</div>}
+                    {isSuccess && (
+                        <React.Fragment>
+                            <div className="w-full p-4 mb-2 bg-light-xl rounded-lg shadow-md text-center text-2xl">
+                                <p>{merchant.data.shopName}</p>
+                            </div>
+                            <div className="bg-light-xl flex flex-col justify-center items-center rounded-lg overflow-hidden w-full p-8">
+                                <canvas
+                                    className="py-4 m-auto"
+                                    id="barCode"
+                                ></canvas>
+                                {/* <QRCode className="" value={qrCodeValue} /> */}
+                                <img
+                                    className="max-w-[500px] max-h-[500px] w-full h-full rounded-lg"
+                                    src={merchant.data.images.qrCode.url}
+                                    alt=""
+                                />
+                            </div>
+                        </React.Fragment>
+                    )}
                 </div>
             </PageHeader>
         </div>
