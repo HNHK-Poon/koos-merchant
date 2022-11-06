@@ -52,6 +52,7 @@ const QrPage = ({ route }: any) => {
         // );
         dispatch(getWalletBalance(walletSerice.getBalance) as any);
         const timestamp = (new Date().getTime() * 3).toString();
+        console.log('timestamp', timestamp);
         try {
             // The return value is the canvas element
             const canvas = bwipjs.toCanvas('barCode', {

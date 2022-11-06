@@ -11,6 +11,7 @@ import { jwtDecrypt } from '@/infrastructure/seedworks/jwtVerify';
 import { useDispatch } from 'react-redux';
 import { editAuth } from '@/infrastructure/state/auth';
 import { BsTelephone } from 'react-icons/bs';
+import InputMask from 'react-input-mask';
 
 const LoginPage = () => {
     const { t } = useTranslation();
@@ -38,7 +39,11 @@ const LoginPage = () => {
     const handleSubmit = async (event: any) => {
         event.preventDefault();
         const res = await authService
-            .login({ CountryCode:"+60", PhoneNumber: phoneNumber, Password: password })
+            .login({
+                CountryCode: '+60',
+                PhoneNumber: phoneNumber,
+                Password: password,
+            })
             .then(async (success: any) => {
                 await Swal.fire({
                     icon: 'success',
@@ -61,7 +66,7 @@ const LoginPage = () => {
             .catch((err: any) => {
                 Swal.fire({
                     icon: 'error',
-                    text: 'Sign in failed, please try again',
+                    text: err.response.data.message,
                     timer: 2000,
                     showConfirmButton: false,
                 });
@@ -101,16 +106,11 @@ const LoginPage = () => {
                                     <BsTelephone className="w-8 h-8" />
                                 </div>
                                 <span className="px-2 select-none">+60</span>
-                                <input
-                                    type="phone"
-                                    name="phone"
-                                    id="phone"
-                                    autoComplete="off"
-                                    placeholder={t(
-                                        'auth.form.phonePlaceholder'
-                                    )}
-                                    onChange={handleContactChange}
+                                <InputMask
+                                    mask="99-999 99999"
                                     className="p-2 bg-light-xl w-full rounded-md focus:outline-none text-dark-m"
+                                    maskChar={null}
+                                    onChange={handleContactChange}
                                 />
                             </div>
                         </div>
@@ -140,14 +140,14 @@ const LoginPage = () => {
                         >
                             {t('auth.form.signinButtonText')}
                         </button>
-                        <div className="mt-4 text-sm text-center">
+                        {/* <div className="mt-4 text-sm text-center">
                             <a
                                 href="/forgotpassword"
                                 className="font-medium text-dark-m"
                             >
                                 {t('auth.form.forgotPasswordText')}
                             </a>
-                        </div>
+                        </div> */}
                     </form>
                 </div>
             </div>
