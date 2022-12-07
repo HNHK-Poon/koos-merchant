@@ -11,11 +11,16 @@ import { useNavigate } from 'react-router-dom';
 import add from '@assets/icons/icon-8/icons8-add-new-96.png';
 import scan from '@assets/icons/icon-8/icons8-rectangle-96.png';
 import qrCode from '@assets/icons/icon-8/icons8-qr-code-96.png';
+import history from '@assets/icons/icon-8/icons8-order-history-96.png';
+
 
 const MenuWidget = () => {
     const navigate = useNavigate();
     const goToTopup = () => {
         navigate('/topup');
+    }
+    const goToHistory = () => {
+        navigate('/history');
     }
     const goToQRPage = () => {
         navigate('/qrcode', { state: { balance: 'RM20' } });
@@ -28,12 +33,6 @@ const MenuWidget = () => {
 
     return (
         <div className="flex justify-between items-center rounded-lg bg-light-xl shadow-md">
-            <div className="px-4 py-2" onClick={goToTopup}>
-                <img className="w-12 h-12 m-auto" src={add} alt="" />
-                <p className="text-center text-dark-xs text-xs font-semibold">
-                    Top Up
-                </p>
-            </div>
             <div className="px-4 py-2" onClick={goToScan}>
                 <img className="w-12 h-12 m-auto" src={scan} alt="" />
                 <p className="text-center text-dark-xs text-xs font-semibold">
@@ -44,6 +43,12 @@ const MenuWidget = () => {
                 <img className="w-12 h-12 m-auto" src={qrCode} alt="" />
                 <p className="text-center text-dark-xs text-xs font-semibold">
                     QR Code
+                </p>
+            </div>
+            <div className="px-4 py-2" onClick={goToHistory}>
+                <img className="w-12 h-12 m-auto" src={history} alt="" />
+                <p className="text-center text-dark-xs text-xs font-semibold">
+                    History
                 </p>
             </div>
         </div>

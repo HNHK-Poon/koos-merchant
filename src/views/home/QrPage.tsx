@@ -51,11 +51,21 @@ const QrPage = ({ route }: any) => {
         //     getAccount(() => accountService.getAccount(auth.userId)) as any
         // );
         dispatch(getWalletBalance(walletSerice.getBalance) as any);
+    }, []);
+
+    useEffect(() => {
+        console.log('QR', auth.userId, auth.name);
+        // setQrCodeValue(JSON.stringify({
+        //     merchantId: auth.userId,
+        //     name: auth.name,
+        // }));
+        setQrCodeValue(
+            `https://koosbonus.com/?prm=0&merchant=${auth.userId}&name=${auth.name}`
+        );
         const timestamp = (new Date().getTime() * 3).toString();
-        console.log('timestamp', timestamp);
         try {
-            // The return value is the canvas element
-            const canvas = bwipjs.toCanvas('barCode', {
+            let canvas = document.createElement('canvas');
+             bwipjs.toCanvas('barCode', {
                 bcid: 'code128', // Barcode type
                 text:
                     timestamp.substring(0, 3) +
@@ -71,17 +81,6 @@ const QrPage = ({ route }: any) => {
         } catch (e) {
             // `e` may be a string or Error object
         }
-    }, []);
-
-    useEffect(() => {
-        console.log('QR', auth.userId, auth.name);
-        // setQrCodeValue(JSON.stringify({
-        //     merchantId: auth.userId,
-        //     name: auth.name,
-        // }));
-        setQrCodeValue(
-            `https://koosbonus.com/?prm=0&merchant=${auth.userId}&name=${auth.name}`
-        );
     }, [auth]);
 
     const backToMain = () => {
@@ -91,7 +90,7 @@ const QrPage = ({ route }: any) => {
     return (
         <div className="">
             <PageHeader title="Back" path="/" childrenStyle="bg-primary-m">
-                <div className="flex flex-col justify-center items-center p-4">
+                <div className="flex flex-col justify-center items-center p-4 h-full">
                     {isLoading && <div>Loading...</div>}
                     {isError && <div>Error: {error.message}</div>}
                     {isSuccess && (
@@ -99,11 +98,11 @@ const QrPage = ({ route }: any) => {
                             <div className="w-full p-4 mb-2 bg-light-xl rounded-lg shadow-md text-center text-2xl">
                                 <p>{merchant.data.shopName}</p>
                             </div>
-                            <div className="bg-light-xl flex flex-col justify-center items-center rounded-lg overflow-hidden w-full p-8">
-                                <canvas
+                            <div className="bg-light-xl flex flex-col justify-center items-center rounded-lg overflow-hidden w-full p-8 mb-[100px]">
+                                {/* <canvas
                                     className="py-4 m-auto"
                                     id="barCode"
-                                ></canvas>
+                                ></canvas> */}
                                 {/* <QRCode className="" value={qrCodeValue} /> */}
                                 <img
                                     className="max-w-[500px] max-h-[500px] w-full h-full rounded-lg"

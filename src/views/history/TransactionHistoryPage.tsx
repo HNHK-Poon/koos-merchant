@@ -1,32 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useOutletContext } from 'react-router-dom';
+import EmptyData from '@/components/widgets/EmptyData';
 import { useSelector } from 'react-redux';
-import { getWalletBalance, selectAsset } from '@/infrastructure/state/asset';
-import {
-    useTransactionService,
-    useWalletService,
-} from '@/infrastructure/hook/useService';
-import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/infrastructure/state/store';
 import {
     getTransactions,
     selectTransactions,
 } from '@/infrastructure/state/transaction';
-import TransactionRecord from '@/views/transaction/@components/TransactionRecord';
+import TransactionRecord from '../transaction/@components/TransactionRecord';
+import { useTransactionService } from '@/infrastructure/hook/useService';
 import { useQuery } from 'react-query';
-import EmptyData from '@/components/widgets/EmptyData';
 
-const HistoryWidget = () => {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const asset = useSelector(selectAsset);
-    const walletSerice: any = useWalletService();
+const TransactionHistoryPage = (props: any) => {
+    const context: any = useOutletContext();
+    const dispatch = useDispatch<AppDispatch>();
     const transactionService = useTransactionService();
-    console.log('asset', asset);
-
-    useEffect(() => {
-        dispatch(getWalletBalance(walletSerice.getBalance) as any);
-    }, [dispatch]);
 
     const {
         isLoading,
@@ -49,12 +39,9 @@ const HistoryWidget = () => {
     if (isError) {
         console.log('error', error);
     }
-
+    console.log('transactions', transactions);
     return (
-        <div className="flex flex-col w-full justify-center items-center">
-            <p className="w-full text-left text-primary-xl text-base font-semibold">
-                Latest Transactions
-            </p>
+        <div {...context.swipeHandler} className="grow bg-light-xl p-4">
             {isLoading && <div>Loading...</div>}
             {isError && <div>Error</div>}
             {isSuccess &&
@@ -79,11 +66,10 @@ const HistoryWidget = () => {
                         />
                     );
                 })}
-            {/* <p className='text-light-m text-xs -mt-1'>RM{asset.Amount.toFixed(2)} in cash</p> */}
         </div>
     );
 };
 
-HistoryWidget.propTypes = {};
+TransactionHistoryPage.propTypes = {};
 
-export default HistoryWidget;
+export default TransactionHistoryPage;

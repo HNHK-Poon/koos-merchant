@@ -17,6 +17,9 @@ import { useEffect } from 'react';
 import TopUpPage from '@/views/transaction/topup/TopUpPage';
 import QrReaderPage from '@/views/home/QrReader';
 import WalletTransactionModalPage from '@/views/transaction/WalletTransactionModalPage';
+import HistoryPage from '@/views/history/HistoryPage';
+import TransactionHistoryPage from '@/views/history/TransactionHistoryPage';
+import WithdrawalHistoryPage from '@/views/history/WithdrawalHistoryPage';
 // import Home from "@/views/home/Home";
 
 const AppRouter = () => {
@@ -92,6 +95,31 @@ const AppRouter = () => {
                     </ProtectedRoute>
                 }
             />
+            <Route
+                path="/history"
+                element={
+                    <ProtectedRoute>
+                        <HistoryPage />
+                    </ProtectedRoute>
+                }
+            >
+                <Route
+                    path="transaction"
+                    element={
+                        <ProtectedRoute>
+                            <TransactionHistoryPage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="withdrawal"
+                    element={
+                        <ProtectedRoute>
+                            <WithdrawalHistoryPage />
+                        </ProtectedRoute>
+                    }
+                />
+            </Route>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signupinfo" element={<SignUpInfoPage />} />
             <Route path="/signupverify" element={<SignUpVerifyPage />} />

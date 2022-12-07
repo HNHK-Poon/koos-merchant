@@ -3,7 +3,7 @@ export const walletSerice = (rest: any) => {
     return {
         getBalance: () => {
             return new Promise((resolve, reject) => {
-                rest.get(`${API_PREFIX}/user/balance`, {})
+                rest.get(`${API_PREFIX}/merchant/balance`, {})
                     .then((res: any) => {
                         resolve([null, res]);
                     })

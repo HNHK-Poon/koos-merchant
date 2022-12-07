@@ -16,17 +16,31 @@ const SocketProvider = (props: any) => {
         if (userId) {
             setUserId(userId);
         }
-        if (!socket) {
-            setSocket(io(import.meta.env.VITE_SOCKET_URL));
+        if (socket) {
+            console.log('socket already initialized', socket, socket.connected);
+            if (!socket.connected) {
+                console.log('socket disconnected!!!');
+                // dispatch(editStatus({ key: 'isSocketLoading', value: true }));
+                // navigate('/login');
+                // socket.connect();
+            }
         }
+        if (!socket) {
+            console.log('initing socket');
+            let _socket = io(import.meta.env.VITE_SOCKET_URL);
+            setSocket(_socket);
+            // setSocket(io(import.meta.env.VITE_SOCKET_URL));
+        }
+
     };
 
     useEffect(() => {
         if (socket) {
+            console.log('merchant join', userId);
             socket.emit('merchant:join', { userId: userId });
 
             socket.on('connect', () => {
-                console.log('connected', socket.id); // x8WIv7-mJelg7on_ALbx
+                console.log('socket connected', socket.id); // x8WIv7-mJelg7on_ALbx
             });
 
             socket.on('transaction:paid', (params: any) => {

@@ -40,8 +40,8 @@ const LoginPage = () => {
         event.preventDefault();
         const res = await authService
             .login({
-                CountryCode: '+60',
-                PhoneNumber: phoneNumber,
+                countryCode: '+60',
+                phoneNumber: phoneNumber.replace('-', '').replace(' ', ''),
                 Password: password,
             })
             .then(async (success: any) => {
@@ -77,8 +77,13 @@ const LoginPage = () => {
         <>
             <div className="w-screen h-screen flex justify-center items-center bg-light-xl">
                 <div className="block w-80">
-                    <div className="text-center text-2xl font-extrabold text-dark-l">
-                        KOSTO PREMIO
+                    <img
+                        className=""
+                        src="https://sin1.contabostorage.com/886afe3fdb01483eb57380db79eb6fb4:kosto-asset/kosto-logo.png"
+                        alt=""
+                    />
+                    <div className="text-center text-xl text-dark-l my-2">
+                        Merchant Application
                     </div>
                     <form>
                         {/* <div className="px-2 py-2 mt-4 w-full bg-light-xl rounded-full shadow-lg">

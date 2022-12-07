@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import PageHeader from '@/components/PageHeader';
 import { HiOutlineMail, HiUserCircle, HiDocumentText } from 'react-icons/hi';
@@ -22,6 +22,7 @@ import { useDispatch } from 'react-redux';
 import PageLoading from '@/components/PageLoading';
 import success from '@assets/icons/success.png';
 import { format } from 'date-fns';
+import { useQuery } from 'react-query';
 
 interface IProps {}
 
@@ -47,13 +48,25 @@ const TransactionModalPage = (props: IProps) => {
     const dispatch = useDispatch();
     let { id }: any = useParams();
     const transactionService = useTransactionService();
-    const transaction = useSelector((state: any) =>
-        selectTransactionById(state, id)
+    const [transaction, setTransaction] = useState<ITransactionState>();
+
+    const {
+        isLoading,
+        isError,
+        data: transactions,
+        error,
+        isSuccess,
+    } = useQuery<any, Error>(
+        ['history', { category: 'transactions' }],
+        () => transactionService.getTransactions(),
+        { staleTime: 60000 }
     );
 
     useEffect(() => {
-        dispatch(getTransactions(transactionService.getTransactions) as any);
-    }, []);
+        if (isSuccess) {
+            setTransaction(transactions.data.find((t: any) => t.TransactionId === id));
+        }
+    }, [isSuccess]);
 
     useEffect(() => {
         if (location.state === undefined || location.state === null) {
@@ -79,8 +92,8 @@ const TransactionModalPage = (props: IProps) => {
     return (
         <div className="bg-light-xl h-screen w-screen flex flex-col ">
             <PageHeader title="Details">
-                {!transaction && <PageLoading />}
-                {transaction && (
+                {isLoading && <PageLoading />}
+                {isSuccess && transaction && (
                     <div className="relative grow h-48 w-full bg-light-xl">
                         <div className="absolute h-24 w-full bg-primary-m"></div>
                         <div className="absolute pt-12 h-full w-full text-white">
@@ -140,7 +153,7 @@ const TransactionModalPage = (props: IProps) => {
                                                     </p>
                                                 </div>
                                                 <div className="inline-flex items-center text-xs  text-gray-900 ">
-                                                    {transaction.id.slice(
+                                                    {transaction.TransactionId.slice(
                                                         0,
                                                         24
                                                     )}
