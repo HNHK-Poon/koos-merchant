@@ -37,7 +37,12 @@ const ProtectedRoute = ({ children }: Props) => {
         return <Navigate to="/login" replace />;
     }
     else {
-        socket.init(jwtDecrypt(token).userId)
+        const jwtInfo = jwtDecrypt(token);
+        if(jwtInfo.merchantIds) {
+            socket.init(JSON.parse(jwtInfo.merchantIds)[0])
+        }
+        // console.log("socket", JSON.parse(jwtDecrypt(token).merchantIds)[0])
+        // socket.init(JSON.parse(jwtDecrypt(token).merchantIds)[0])
         return children;
     }
 };

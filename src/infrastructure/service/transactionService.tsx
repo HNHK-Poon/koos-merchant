@@ -12,13 +12,7 @@ export const transactionService = (rest: any) => {
             return rest.post(`${TRANSMIT_PREfiX}/queue/merchantCreate`, data);
         },
         getTransactions: () => {
-            return rest.get(`${API_PREFIX}/merchant`, {
-                params: {
-                    PageSize: 100,
-                    SortBy: 'CreatedDateTime',
-                    SortOrder: 0,
-                },
-            });
+            return rest.get(`${API_PREFIX}/merchant`);
         },
     };
 };

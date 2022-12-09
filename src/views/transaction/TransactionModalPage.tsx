@@ -57,14 +57,19 @@ const TransactionModalPage = (props: IProps) => {
         error,
         isSuccess,
     } = useQuery<any, Error>(
-        ['history', { category: 'transactions' }],
+        ['history', { category: 'transaction' }],
         () => transactionService.getTransactions(),
-        { staleTime: 60000 }
+        {
+            staleTime: 0,
+            cacheTime: 0,
+        }
     );
 
     useEffect(() => {
         if (isSuccess) {
-            setTransaction(transactions.data.find((t: any) => t.TransactionId === id));
+            setTransaction(
+                transactions.data.find((t: any) => t.TransactionId === id)
+            );
         }
     }, [isSuccess]);
 
