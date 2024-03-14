@@ -6,54 +6,38 @@ import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 
 interface IProps {
-    id: string;
-    user: string;
-    name: string;
-    time: string;
-    amount: string;
-    status: number;
-    paymentType?: number;
-    paymentInfo?: string;
+  id: string;
+  user: string;
+  name: string;
+  time: string;
+  amount: string;
+  status: number;
+  paymentType?: number;
+  productName?: number;
+  paymentInfo?: string;
 }
 
 const TransactionRecord = (props: IProps) => {
-    const navigate = useNavigate();
-    const goToTransaction = () => {
-        navigate(`/transaction/${props.id}`, { state: { isCreated: false } });
-    };
+  const navigate = useNavigate();
+  const goToTransaction = () => {
+    navigate(`/transaction/${props.id}`, { state: { isCreated: false } });
+  };
 
-    return (
-        <div
-            onClick={goToTransaction}
-            className="flex justify-between items-center my-1.5 p-3 rounded-md shadow-sm w-full "
-        >
-            <div className="text-left text-dark-l">
-                <p className="text-lg py-1">{props.name}</p>
-                {(props.paymentType===0 || props.paymentType===1) && (
-                    <p className="text-xs font-light">
-                        {props.paymentType == 0 ? 'Cash Payment' : 'Payment'}
-                    </p>
-                )}
-                {props.paymentInfo && (
-                    <p className="text-xs font-light">
-                        {props.paymentInfo}
-                    </p>
-                )}
-            </div>
-            <div className="text-right text-dark-l">
-                <p
-                    className={classNames(
-                        'text-lg font-semibold py-1 text-primary-l'
-                    )}
-                >
-                    {`RM${props.amount}`}
-                </p>
-                <p className="font-light text-xs">
-                    {format(new Date(props.time), 'dd/MM, hh:mma')}
-                </p>
-            </div>
-        </div>
-    );
+  return (
+    <div className="flex justify-between h-28 border-b border-gray-200 p-2">
+      <div className="flex-initial w-64">
+        <p className="text-gray-500 text-left text-xs ">{format(new Date(props.time), 'dd/MM/yyyy, hh:mma')}</p>
+        <p className="text-gray-600 text-left font-semibold text-md pt-1 pb-2">{props.name}</p>
+        <p className="text-gray-600 text-left overflow-hidden text-ellipsis whitespace-nowrap text-xs">
+          {props.productName}
+        </p>
+      </div>
+
+      <div className="flex items-center justify-end w-20">
+        <p className="text-green-500">{`RM${props.amount}`}</p>
+      </div>
+    </div>
+  );
 };
 
 TransactionRecord.propTypes = {};
