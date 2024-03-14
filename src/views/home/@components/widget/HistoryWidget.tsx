@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { getWalletBalance, selectAsset } from '@/infrastructure/state/asset';
-import { useTransactionService, useWalletService } from '@/infrastructure/hook/useService';
+import { useAccountService, useTransactionService, useWalletService } from '@/infrastructure/hook/useService';
 import { useNavigate } from 'react-router-dom';
 import transaction, { getTransactions, selectTransactions } from '@/infrastructure/state/transaction';
 import TransactionRecord from '@/views/transaction/@components/TransactionRecord';
@@ -16,12 +16,13 @@ const HistoryWidget = () => {
   const asset = useSelector(selectAsset);
   const walletSerice: any = useWalletService();
   const transactionService = useTransactionService();
+  const accountService = useAccountService();
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(20);
   const [fetchedTransactions, setFetchedTransactions] = useState([] as any);
 
   useEffect(() => {
-    dispatch(getWalletBalance(walletSerice.getBalance) as any);
+    // dispatch(getWalletBalance(walletSerice.getBalance) as any);
   }, [dispatch]);
 
   const { isLoading, isError, data, error, isSuccess } = useQuery<any, Error>(
@@ -42,6 +43,7 @@ const HistoryWidget = () => {
   const getMoreList = async () => {
     setCurrentPage(currentPage + 1);
   };
+
   return (
     <div className="flex flex-col w-full justify-center items-center">
       <p className="w-full text-left text-primary-xl text-base font-semibold">Latest Transactions</p>
